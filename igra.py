@@ -83,9 +83,9 @@ class Igra():
 			for vrstica in range(dolzina-4):
 				if self.tabela[vrstica][stolpec] != 0:
 					ena = self.tabela[vrstica][stolpec]
-					dva = self.tabela[vrstica+1][stolpec] 
-					tri = self.tabela[vrstica+2][stolpec] 
-					stiri = self.tabela[vrstica+3][stolpec] 
+					dva = self.tabela[vrstica+1][stolpec]
+					tri = self.tabela[vrstica+2][stolpec]
+					stiri = self.tabela[vrstica+3][stolpec]
 					pet = self.tabela[vrstica+4][stolpec]
 					if ena == dva == tri == stiri == pet:
 						self.konec = True	
@@ -94,20 +94,28 @@ class Igra():
 
 		for vrstica in range(4, dolzina):
 			for stolpec in range(0, dolzina-4):
-				if self.tabela[vrstica][stolpec] != 0 and (\
-				self.tabela[vrstica][stolpec] == self.tabela[vrstica-1][stolpec+1] == \
-				self.tabela[vrstica-2][stolpec+2] == self.tabela[vrstica-3][stolpec+3] == self.tabela[vrstica-4][stolpec+4]):
-					self.konec = True	
-					return (True, self.na_potezi,\
-						[(vrstica,stolpec),(vrstica-1,stolpec+1),(vrstica-2,stolpec+2),(vrstica-3,stolpec+3),(vrstica-4,stolpec+4)])   
-	                
+				if self.tabela[vrstica][stolpec] != 0:
+					ena = self.tabela[vrstica][stolpec]
+					dva = self.tabela[vrstica-1][stolpec+1]
+					tri = self.tabela[vrstica-2][stolpec+2]
+					stiri = self.tabela[vrstica-3][stolpec+3]
+					pet = self.tabela[vrstica-4][stolpec+4]
+					if ena == dva == tri == stiri == pet:
+						self.konec = True	
+						return (True, self.na_potezi,\
+							[(vrstica,stolpec),(vrstica-1,stolpec+1),(vrstica-2,stolpec+2),(vrstica-3,stolpec+3),(vrstica-4,stolpec+4)])   
+
 		for vrstica in range(0, dolzina-4):
 			for stolpec in range(0, dolzina-4):
-				if self.tabela[vrstica][stolpec] != 0 and (\
-				self.tabela[vrstica][stolpec] == self.tabela[vrstica+1][stolpec+1] == \
-				self.tabela[vrstica+2][stolpec+2] == self.tabela[vrstica+3][stolpec+3] == self.tabela[vrstica+4][stolpec+4]):
-					self.konec = True	
-					return (True, self.na_potezi,\
-						[(vrstica,stolpec),(vrstica+1,stolpec+1),(vrstica+2,stolpec+2),(vrstica+3,stolpec+3),(vrstica+4,stolpec+4)]) 
+				if self.tabela[vrstica][stolpec] != 0:
+					ena = self.tabela[vrstica][stolpec] 
+					dva = self.tabela[vrstica+1][stolpec+1]
+					tri = self.tabela[vrstica+2][stolpec+2]
+					stiri = self.tabela[vrstica+3][stolpec+3]
+					pet = self.tabela[vrstica+4][stolpec+4]
+					if ena == dva == tri == stiri == pet:
+						self.konec = True
+						return (True, self.na_potezi,\
+							[(vrstica,stolpec),(vrstica+1,stolpec+1),(vrstica+2,stolpec+2),(vrstica+3,stolpec+3),(vrstica+4,stolpec+4)]) 
 
 		return (False,None, None)

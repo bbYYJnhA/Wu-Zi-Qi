@@ -2,9 +2,6 @@ import tkinter
 from igra import*
 from clovek import*
 
-#igralec1 = 1
-#igralec2 = -1
-
 neodloceno = None
 
 class Gui():

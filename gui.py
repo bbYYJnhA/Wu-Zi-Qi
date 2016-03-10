@@ -2,31 +2,35 @@ import tkinter
 from igra import*
 from clovek import*
 
-neodloceno = None
-
 class Gui():
-	
+
 	def __init__(self, master):
+		#Potrebno je popraviti rob plošče in dodati dodatne gumbe
+		#gumbe je potrebno spraviti tudi v delovanje
 		self.napis1 = tkinter.StringVar(master, value="Dobrodošli v 五子棋")
 		tkinter.Label(master, textvariable=self.napis1).grid(row=0, column=0)
 
-		self.napis2 = tkinter.StringVar(master, value="igrate 5 v vrsto")
+		#tukaj bi raje dodal napis self.stanje
+		self.napis2 = tkinter.StringVar(master, value="Igrate 5 v vrsto")
 		tkinter.Label(master, textvariable=self.napis2).grid(row=2, column=0)
 
-
-		self.plosca = tkinter.Canvas(master, width=648, height=648, bg = "green")
+		self.plosca = tkinter.Canvas(master, width=648, height=648, bg = "green", borderwidth=0)
 		self.plosca.grid(row=1, column=0)
 		
-		self.gumb1 = tkinter.Button(master, text="Nova igra")
+		self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.koncaj_igro)
 		self.gumb1.grid(row=1, column=1)
+		# gumn, ki razveljavi potezo ...
 
+		#!!! manjkata dve črti !!!
 		for i in range(18):
-			self.plosca.create_line(i*36, 0, i*36, 684)
-			self.plosca.create_line(0, i*36, 684, i*36)
+			self.plosca.create_line(i*36, 0, i*36, 648)
+			self.plosca.create_line(0, i*36, 648, i*36)
 			#self.izbira_igralcev()
 
 		self.igra = Igra(self)
-
+		self.igra.na_potezi.igraj()
+	
+	
 	def narisi1(self, i, j):
 		x = i * 36
 		y = j * 36
@@ -44,7 +48,6 @@ class Gui():
 			else:
 				self.narisi2(i, j)
 			self.igra.povleci(i, j)
-
 
 if __name__ == "__main__":
 	# Naredimo glavno okno in nastavimo ime

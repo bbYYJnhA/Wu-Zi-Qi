@@ -1,4 +1,5 @@
 from clovek import*
+from racunalnik import*
 
 CRNI = 1
 BELI = -1
@@ -16,18 +17,19 @@ def matrika_nicel(n, m):
 class Igra():
 	def __init__(self, gui):
 		self.tabela = matrika_nicel(19,19)
-		self.igralec1 = Clovek(self)
+		self.igralec1 = Racunalnik(self)
 		self.igralec2 = Clovek(self)
 		self.na_potezi = self.igralec1
 		self.gui = gui
 		#Mogoče, bova rabla
 		self.konec = False
-		self.na_potezi.igraj()
+		self.napis = "Na potezi je črni"
+		
 
         #Ali je poteza pravilna (to metodo bo poklical Gui - self.igra.pravilna(i,j))
 	def pravilna(self, i, j):
 		"""Funkcija preveri ali je poteza pravilna"""
-		return (self.tabela[j][i] == 0 and not self.konec)
+		return ((self.tabela[j][i] == 0) and not (self.konec))
 	
 	def preveri_konec(self):
 		"""Funkcija ugotovi, če je tabela polna"""
@@ -36,6 +38,7 @@ class Igra():
 	def nasportnik(self):
 		if self.na_potezi == self.igralec1:
 			self.na_potezi = self.igralec2
+			self.napis = "Na potezi je beli"
 		elif self.na_potezi == self.igralec2:
 			self.na_potezi = self.igralec1
 		else:
@@ -60,6 +63,7 @@ class Igra():
 				#self.stanje ko bo igra izenačena
 			else:
 				self.nasportnik()
+				self.na_potezi.igraj()
 
 		#Ali je konec (to metodo bo poklical Gui - self.igra.preveri_konec(i,j))
 	def preveri_zmago(self, j, i):

@@ -27,7 +27,7 @@ class Igra():
         #Ali je poteza pravilna (to metodo bo poklical Gui - self.igra.pravilna(i,j))
 	def pravilna(self, i, j):
 		"""Funkcija preveri ali je poteza pravilna"""
-		return self.tabela[j][i] == 0
+		return (self.tabela[j][i] == 0 and not self.konec)
 	
 	def preveri_konec(self):
 		"""Funkcija ugotovi, če je tabela polna"""

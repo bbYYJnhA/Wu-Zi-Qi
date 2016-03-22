@@ -17,7 +17,7 @@ def matrika_nicel(n, m):
 class Igra():
 	def __init__(self, gui):
 		self.tabela = matrika_nicel(19,19)
-		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))
+		self.igralec1 = Racunalnik(self, Minimax(globina), CRNI)#Clovek(self, CRNI)#, Minimax(globina))
 		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
 		self.na_potezi = self.igralec1
 		self.gui = gui

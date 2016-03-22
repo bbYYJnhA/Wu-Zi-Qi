@@ -98,7 +98,8 @@ class Minimax():
 			# izenačenje !?!
 			else:
 				return (None, 0)
-
+		if len(self.igra.poteze) == 0:
+			return ((10,10), 10000000000)
 		if globina == 0:
 			#print("globina 0")
 			return (None, vrednost_skupaj(self.igra.tabela, barva))

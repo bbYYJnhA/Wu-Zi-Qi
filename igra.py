@@ -17,7 +17,7 @@ def matrika_nicel(n, m):
 class Igra():
 	def __init__(self, gui):
 		self.tabela = matrika_nicel(19,19)
-		self.igralec1 = Clovek(self,CRNI)#, Minimax(globina))
+		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))
 		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
 		self.na_potezi = self.igralec1
 		self.gui = gui
@@ -40,10 +40,6 @@ class Igra():
 			assert "Seznam je prazen"
 		# manjka self.igraj ....
 		# izbris krozca
-
-	def shrani_pozicijo(self):
-		p = [self.tabela[i][:] for i in range(19)]
-		self.poteze.append((p, self.na_potezi))
 
 	def kopija(self):
 		"""Vrni kopijo te igre, brez zgodovine."""
@@ -77,14 +73,9 @@ class Igra():
 			
 	def povleci(self, i, j):
 		if self.pravilna(i,j):
-			if self.na_potezi == self.igralec1:
-				self.tabela[j][i] = CRNI
-				self.poteze += [(i, j)]
-				#print(self.tabela)
-			else:
-				self.tabela[j][i] = BELI
-				self.poteze += [(i, j)]
-			#self.na_potezi = self.na_potezi.nasprotnik()
+			self.tabela[j][i] = self.na_potezi.barva
+			self.poteze += [(i, j)]
+				
 			(kaj, kdo, kje) = self.preveri_zmago(i,j)
 			if kaj:
 				print(str(kdo.barva),str(kje))

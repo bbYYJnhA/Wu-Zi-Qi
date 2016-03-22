@@ -2,7 +2,7 @@ from clovek import*
 from racunalnik import*
 
 CRNI = 1
-BELI = -1
+BELI = 2
 
 
 def matrika_nicel(n, m):
@@ -17,53 +17,88 @@ def matrika_nicel(n, m):
 class Igra():
 	def __init__(self, gui):
 		self.tabela = matrika_nicel(19,19)
-		self.igralec1 = Racunalnik(self)
-		self.igralec2 = Clovek(self)
+		self.igralec1 = Clovek(self,CRNI)#, Minimax(globina))
+		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
 		self.na_potezi = self.igralec1
 		self.gui = gui
+
+
+		
 		#Mogoče, bova rabla
 		self.konec = False
-		self.napis = "Na potezi je črni"
-		
+		self.poteze = []
+
+	def zamenjaj(self):
+		self.nasportnik()
+		self.na_potezi.igraj()
+	
+	def razveljavi(self):
+		if len(self.poteze)>0:
+			(i,j) = self.poteze.pop()
+			self.tabela[j][i] = 0
+		else:
+			assert "Seznam je prazen"
+		# manjka self.igraj ....
+		# izbris krozca
+
+	def shrani_pozicijo(self):
+		p = [self.tabela[i][:] for i in range(19)]
+		self.poteze.append((p, self.na_potezi))
+
+	def kopija(self):
+		"""Vrni kopijo te igre, brez zgodovine."""
+		k = Igra(self.gui)
+		k.tabela = [self.tabela[i][:] for i in range(19)]
+		k.na_potezi = self.na_potezi
+		k.poteze = self.poteze[:]
+		return k
 
         #Ali je poteza pravilna (to metodo bo poklical Gui - self.igra.pravilna(i,j))
 	def pravilna(self, i, j):
 		"""Funkcija preveri ali je poteza pravilna"""
 		return ((self.tabela[j][i] == 0) and not (self.konec))
-	
+
 	def preveri_konec(self):
 		"""Funkcija ugotovi, če je tabela polna"""
-		pass
+		for i in self.tabela:
+			if 0 in i:
+				break
+		else:
+			self.konec = True
 		
 	def nasportnik(self):
 		if self.na_potezi == self.igralec1:
 			self.na_potezi = self.igralec2
-			self.napis = "Na potezi je beli"
 		elif self.na_potezi == self.igralec2:
 			self.na_potezi = self.igralec1
 		else:
+		#	self.na_potezi = self.igralec1
 			assert False, "Neveljaven nasprotnik"
 			
 	def povleci(self, i, j):
 		if self.pravilna(i,j):
 			if self.na_potezi == self.igralec1:
 				self.tabela[j][i] = CRNI
-				print(self.tabela)
+				self.poteze += [(i, j)]
+				#print(self.tabela)
 			else:
 				self.tabela[j][i] = BELI
+				self.poteze += [(i, j)]
 			#self.na_potezi = self.na_potezi.nasprotnik()
 			(kaj, kdo, kje) = self.preveri_zmago(i,j)
 			if kaj:
-				if kdo == self.igralec1:
-					print("KONEC  " + "Zmagal je CRNI" + "  " + str(kje))
-				else: 
-					print("KONEC  " + "Zmagal je BELI" + "  " + str(kje))
+				print(str(kdo.barva),str(kje))
+				self.gui.narisi_crto(kje)
+				# if kdo == self.igralec1:
+				# 	print("KONEC  " + "Zmagal je CRNI" + "  " + str(kje))
+				# else: 
+				# 	print("KONEC  " + "Zmagal je BELI" + "  " + str(kje))
 				#self.ustavi
 				#self.stanje = "Zmagal je" + self.preveri_zmago()[1]
 				#self.stanje ko bo igra izenačena
-			else:
-				self.nasportnik()
-				self.na_potezi.igraj()
+			#else:
+			#	self.nasportnik()
+			#	self.na_potezi.igraj()
 
 		#Ali je konec (to metodo bo poklical Gui - self.igra.preveri_konec(i,j))
 	def preveri_zmago(self, j, i):

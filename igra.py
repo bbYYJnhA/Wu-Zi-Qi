@@ -36,6 +36,7 @@ class Igra():
 		if len(self.poteze)>0:
 			(i,j) = self.poteze.pop()
 			self.tabela[j][i] = 0
+			self.konec = False
 		else:
 			assert "Seznam je prazen"
 		# manjka self.igraj ....

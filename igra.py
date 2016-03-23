@@ -76,7 +76,7 @@ class Igra():
 		if self.pravilna(i,j):
 			self.tabela[j][i] = self.na_potezi.barva
 			self.poteze += [(i, j)]
-				
+			print(self.tabela)	
 			(kaj, kdo, kje) = self.preveri_zmago(i,j)
 			if kaj:
 				print(str(kdo.barva),str(kje))

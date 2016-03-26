@@ -17,13 +17,13 @@ def matrika_nicel(n, m):
 class Igra():
 	def __init__(self, gui):
 		self.tabela = matrika_nicel(19,19)
-		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))Racunalnik(self, Minimax(globina), CRNI)
-		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
+		self.igralec1 = Clovek(self, CRNI)
+		self.igralec2 = Racunalnik(self, Minimax(globina) ,BELI)
 		self.na_potezi = self.igralec1
 		self.gui = gui
 
 
-		
+
 		#Mogoče, bova rabla
 		self.konec = False
 		self.poteze = []
@@ -37,6 +37,8 @@ class Igra():
 			(i,j) = self.poteze.pop()
 			self.tabela[j][i] = 0
 			self.konec = False
+			self.nasportnik()
+			#self.na_potezi.igraj()
 		else:
 			assert "Seznam je prazen"
 		# manjka self.igraj ....
@@ -46,6 +48,8 @@ class Igra():
 		"""Vrni kopijo te igre, brez zgodovine."""
 		k = Igra(self.gui)
 		k.tabela = [self.tabela[i][:] for i in range(19)]
+		k.igralec1 = self.igralec1
+		k.igralec2 = self.igralec2
 		k.na_potezi = self.na_potezi
 		k.poteze = self.poteze[:]
 		return k
@@ -76,11 +80,11 @@ class Igra():
 		if self.pravilna(i,j):
 			self.tabela[j][i] = self.na_potezi.barva
 			self.poteze += [(i, j)]
-			print(self.tabela)	
+			#print(self.tabela)	
 			(kaj, kdo, kje) = self.preveri_zmago(i,j)
 			if kaj:
 				print(str(kdo.barva),str(kje))
-				self.gui.narisi_crto(kje)
+				#self.gui.narisi_crto(kje)
 				# if kdo == self.igralec1:
 				# 	print("KONEC  " + "Zmagal je CRNI" + "  " + str(kje))
 				# else: 
@@ -88,9 +92,9 @@ class Igra():
 				#self.ustavi
 				#self.stanje = "Zmagal je" + self.preveri_zmago()[1]
 				#self.stanje ko bo igra izenačena
-			#else:
-			#	self.nasportnik()
-			#	self.na_potezi.igraj()
+			else:
+				self.nasportnik()
+				self.na_potezi.igraj()
 
 		#Ali je konec (to metodo bo poklical Gui - self.igra.preveri_konec(i,j))
 	def preveri_zmago(self, j, i):

@@ -41,10 +41,10 @@ class Racunalnik():
 #			self.igra.gui.povleci_potezo(i, j)
 
 	def preveri_potezo(self):
-		if self.algoritem.poteza is not None:
+		if (self.algoritem.poteza is not None) and (not self.igra.konec):
 			(i, j) = self.algoritem.poteza
 			self.igra.gui.povleci_potezo(i, j)
-			self.igra.zamenjaj()
+			#self.igra.zamenjaj()
 			self.mislec = None
 		else:
 			self.igra.gui.plosca.after(100, self.preveri_potezo)
@@ -89,7 +89,7 @@ class Minimax():
 		if self.prekinitev:
 			print("Minimax prekinja")
 			return (None, 0)
-		
+
 		if self.igra.konec:
 			if self.igra.na_potezi.barva == CRNI:
 				return (None, 10000000000)

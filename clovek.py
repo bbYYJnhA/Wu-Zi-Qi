@@ -13,4 +13,4 @@ class Clovek():
 		i = (event.x+18) // 36
 		j = (event.y+18) // 36
 		self.igra.gui.povleci_potezo(i, j)
-		self.igra.zamenjaj()
+		#self.igra.zamenjaj()

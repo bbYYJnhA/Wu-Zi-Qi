@@ -4,35 +4,38 @@ ZMAGA = 1000000
 CRNI = 1
 BELI = 2
 
-seznam_1 = ["01110", "0110", "010", "211101", "011010", "010110"]
-seznam_2 = ["211110", "011112", "101112", "211011", "110112", "21110", "01112", "2110", "0112", "210", "012"]
+crni_boljsi = ["01110", "0110", "010", "211101", "011010", "010110"]
+crni_slabsi = ["211110", "011112", "101112", "211011", "110112", "21110", "01112", "2110", "0112", "210", "012"]
 def crni(niz, barva):
 	#prvi in zanji element, da se ujema z elementi iz seznama
 	niz = "2" + niz + "2"
 	vrednost = 0
 	if niz.count("11111") > 0:
-		vrednost = ZMAGA
+		vrednost += ZMAGA
 		return vrednost
 	elif niz.count("011110") > 0:
 		vrednost += ZMAGA//2
 	#elif niz.count("01110") > 0:
 	#	vrednost += ZMAGA//3
 	elif niz.count("10111") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//5
 	elif niz.count("11011") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//5
 	elif niz.count("11101") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//5
 	elif niz.count("11110") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//5
 	elif niz.count("01111") > 0:		
-		vrednost += ZMAGA//4
-	for el in seznam_1:
+		vrednost += ZMAGA//5
+	elif niz.count("01110") > 0:		
+		vrednost += ZMAGA//12
+	
+	for el in crni_boljsi:
 		dolzina = len(el)
 		ponavljanja = niz.count(el)
 		ugodne = el.count("1")
 		vrednost += ponavljanja * 4**ugodne
-	for el in seznam_2:
+	for el in crni_slabsi:
 		dolzina = len(el)
 		ponavljanja = niz.count(el)
 		ugodne = el.count("1")
@@ -41,36 +44,36 @@ def crni(niz, barva):
 	return vrednost
 
 
-seznam_3 = ["02220", "0220", "020", "122202", "022020", "020220"]
-seznam_4 = ["122220", "022221", "202221", "122022", "220221" "12220", "02221", "1220", "0221", "120", "021"]
+beli_boljsi = ["02220", "0220", "020", "122202", "022020", "020220"]
+beli_slabsi = ["122220", "022221", "202221", "122022", "220221" "12220", "02221", "1220", "0221", "120", "021"]
 
 def beli(niz, barva):
 	niz = "1" + niz + "1"
 	vrednost = 0
 	if niz.count("22222") > 0:
-		vrednost = ZMAGA
+		vrednost += ZMAGA
 		return vrednost	
 	elif niz.count("022220") > 0:
-		vrednost += ZMAGA//2
+		vrednost += ZMAGA//5
 	#elif niz.count("02220") > 0: #and barva == BELI:
 	#	vrednost += ZMAGA//3
 	elif niz.count("20222") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//10
 	elif niz.count("22022") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//10
 	elif niz.count("22202") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//10
 	elif niz.count("22220") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//10
 	elif niz.count("02222") > 0:		
-		vrednost += ZMAGA//4
+		vrednost += ZMAGA//10
 
-	for el in seznam_4:
+	for el in beli_slabsi:
 		dolzina = len(el)
 		ponavljanja = niz.count(el)
 		ugodne = el.count("2")
 		vrednost += ponavljanja * 4**ugodne
-	for el in seznam_3:
+	for el in beli_boljsi:
 		dolzina = len(el)
 		ponavljanja = niz.count(el)
 		ugodne = el.count("2")

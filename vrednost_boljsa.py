@@ -15,14 +15,18 @@ def crni(niz, barva):
 		return vrednost
 	elif niz.count("011110") > 0:
 		vrednost += ZMAGA//2
-	elif niz.count("01110") > 0: #and barva == BELI:
-		vrednost += ZMAGA//3
-#	elif niz.count("01110") > 0 and barva == CRNI:
-#		vrednost += ZMAGA//4
-	#elif niz.count("11110") > 0 and barva == CRNI:
-	#	vrednost += ZMAGA//4
-	#elif niz.count("01111") > 0 and barva == CRNI:
-	#	vrednost += ZMAGA//4
+	#elif niz.count("01110") > 0:
+	#	vrednost += ZMAGA//3
+	elif niz.count("10111") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("11011") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("11101") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("11110") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("01111") > 0:		
+		vrednost += ZMAGA//4
 	for el in seznam_1:
 		dolzina = len(el)
 		ponavljanja = niz.count(el)
@@ -45,17 +49,22 @@ def beli(niz, barva):
 	vrednost = 0
 	if niz.count("22222") > 0:
 		vrednost = ZMAGA
-		return vrednost
+		return vrednost	
 	elif niz.count("022220") > 0:
 		vrednost += ZMAGA//2
-	elif niz.count("02220") > 0: #and barva == BELI:
-		vrednost += ZMAGA//3
-	#elif niz.count("02220") > 0 and barva == CRNI:
-	#	vrednost += ZMAGA//4
-	#elif niz.count("22220") > 0 and barva == BELI:
-	#	vrednost += ZMAGA//4
-	#elif niz.count("02222") > 0 and barva == BELI:
-	#	vrednost += ZMAGA//4
+	#elif niz.count("02220") > 0: #and barva == BELI:
+	#	vrednost += ZMAGA//3
+	elif niz.count("20222") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("22022") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("22202") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("22220") > 0:		
+		vrednost += ZMAGA//4
+	elif niz.count("02222") > 0:		
+		vrednost += ZMAGA//4
+
 	for el in seznam_4:
 		dolzina = len(el)
 		ponavljanja = niz.count(el)
@@ -90,11 +99,8 @@ def vse_diagonale(tabela):
 	#le diagonale, ki so dolzine vsaj 5
 	for i in range(5-dolzina, dolzina-4):
 		diagonale.append(list(matrika1.diagonal(i)))
-
-	transponrana = [list(x) for x in zip(*tabela)]
-	matrika2 = np.array(transponrana)
-	for i in range(5-dolzina, dolzina-4):
-		diagonale.append(list(matrika2.diagonal(i)))
+		diagonale.append(list(np.fliplr(matrika1).diagonal(i)))
+	
 
 	return diagonale
 
@@ -114,23 +120,3 @@ def vrednost_skupaj(tabela, barva):
 # print(vrednost_skupaj(tabela2))
 # print(vrednost_skupaj(tabela1))
 # print(vrednost_skupaj(tabela3))
-
-testna_tabela = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 1, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-print(vrednost_skupaj(testna_tabela, BELI))

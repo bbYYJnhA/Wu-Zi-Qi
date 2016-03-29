@@ -15,14 +15,17 @@ def prebarvaj(barva):
 def smiselne_pozicije(neki_seznam):
 	sez = set()
 	for (i, j) in neki_seznam:
-		sez.add((i + 1, j))
-		sez.add((i, j + 1))
-		sez.add((i + 1, j + 1))
+		if i+1 <= 18:
+			sez.add((i + 1, j))
+			sez.add((i + 1, j - 1))			
+		if j+1 <= 18:
+			sez.add((i, j + 1))
+			sez.add((i - 1, j + 1))
+		if j+1 <= 18 and i+1 <=18:
+			sez.add((i + 1, j + 1))
+		sez.add((i - 1, j - 1))
 		sez.add((i - 1, j))
 		sez.add((i, j - 1))
-		sez.add((i - 1, j - 1))
-		sez.add((i - 1, j + 1))
-		sez.add((i + 1, j - 1))
 	return list(sez)
 
 class Racunalnik():
@@ -41,10 +44,10 @@ class Racunalnik():
 #			self.igra.gui.povleci_potezo(i, j)
 
 	def preveri_potezo(self):
-		if (self.algoritem.poteza is not None) and (not self.igra.konec):
+		if self.algoritem.poteza is not None:
 			(i, j) = self.algoritem.poteza
 			self.igra.gui.povleci_potezo(i, j)
-			#self.igra.zamenjaj()
+			self.igra.zamenjaj()
 			self.mislec = None
 		else:
 			self.igra.gui.plosca.after(100, self.preveri_potezo)
@@ -78,18 +81,18 @@ class Minimax():
 		self.prekinitev = False
 		self.jaz = self.igra.na_potezi
 		self.poteza = None
-		(poteza, vrednost) = self.minimax(self.globina, True, self.jaz.barva)
+		(poteza, vrednost) = self.minimax(self.globina, -10000000000, 10000000000,True, self.jaz.barva)
 		self.jaz = None
 		self.igra = None
 		if not self.prekinitev:
 			print("minimax: poteza {0}, vrednost {1}".format(poteza, vrednost))
 			self.poteza = poteza
 
-	def minimax(self, globina, maksimiziramo, barva):		
+	def minimax(self, globina, alfa, beta, maksimiziramo, barva):		
 		if self.prekinitev:
 			print("Minimax prekinja")
 			return (None, 0)
-
+		
 		if self.igra.konec:
 			if self.igra.na_potezi.barva == CRNI:
 				return (None, 10000000000)
@@ -99,7 +102,7 @@ class Minimax():
 			else:
 				return (None, 0)
 		if len(self.igra.poteze) == 0:
-			return ((10,10), 10000000000)
+			return ((9,9), 10000000000)
 		if globina == 0:
 			#print("globina 0")
 			return (None, vrednost_skupaj(self.igra.tabela, barva))
@@ -110,12 +113,16 @@ class Minimax():
 #				for ist, stolpec in enumerate(vrstica):
 			for (iv, ist) in self.smiselne_moznosti:
 				if self.igra.tabela[ist][iv] == 0:
-					self.igra.povleci(iv, ist)
-					vr1 = self.minimax(globina-1, not maksimiziramo, prebarvaj(barva))[1]
+					self.igra.povleci_racunalnik(iv, ist)
+					vr1 = self.minimax(globina-1, alfa, beta, not maksimiziramo, prebarvaj(barva))[1]
 					self.igra.razveljavi()
 					if vr1 > vrednostnajpoteze:
 						vrednostnajpoteze = vr1
 						najpoteza = (iv, ist)
+					if vr1 > alfa:
+						alfa = vr1
+					if beta <= alfa:
+						break
 		else:
 			najpoteza = None
 			vrednostnajpoteze = 10000000000
@@ -123,13 +130,16 @@ class Minimax():
 #				for ist, stolpec in enumerate(vrstica):
 			for (iv, ist) in self.smiselne_moznosti:
 				if self.igra.tabela[ist][iv] == 0:
-					self.igra.povleci(iv, ist)
-					vr1 = self.minimax(globina-1, not maksimiziramo, prebarvaj(barva))[1]
+					self.igra.povleci_racunalnik(iv, ist)
+					vr1 = self.minimax(globina-1, alfa, beta, not maksimiziramo, prebarvaj(barva))[1]
 					self.igra.razveljavi()
 					if vr1 < vrednostnajpoteze:
 						vrednostnajpoteze = vr1
 						najpoteza = (iv, ist)
-
+					if vr1 < beta:
+						beta = vr1
+					if beta <= alfa:
+						break
 		assert (najpoteza is not None), "minimax: izračunana poteza je None"
 		return (najpoteza, vrednostnajpoteze)
 

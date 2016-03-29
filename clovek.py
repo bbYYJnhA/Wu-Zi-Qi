@@ -10,7 +10,8 @@ class Clovek():
 		pass
 
 	def klik(self, event):
-		i = (event.x+18) // 36
-		j = (event.y+18) // 36
-		self.igra.gui.povleci_potezo(i, j)
-		self.igra.zamenjaj()
+		if self.igra.na_potezi.barva == self.barva:
+			i = (event.x+18) // 36
+			j = (event.y+18) // 36
+			self.igra.gui.povleci_potezo(i, j)
+			self.igra.zamenjaj()

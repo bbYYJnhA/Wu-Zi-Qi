@@ -1,7 +1,7 @@
 import threading
 import random
 from vrednost_boljsa import*
-globina = 2
+globina = 4
 CRNI = 1
 BELI = 2
 

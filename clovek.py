@@ -1,17 +1,15 @@
 class Clovek():
-	def __init__(self, igra, barva, tezavnost=None):
-		self.igra = igra
+	def __init__(self, gui, barva, tezavnost=None):
+		self.gui = gui
 		self.barva = barva
         
 	def igraj(self):
-		self.igra.gui.plosca.bind('<Button-1>', self.klik)
+		pass
+		#self.igra.gui.plosca.bind('<Button-1>', self.klik)
 
 	def prekini(self):
 		pass
 
-	def klik(self, event):
-		if self.igra.na_potezi.barva == self.barva:
-			i = (event.x+18) // 36
-			j = (event.y+18) // 36
-			self.igra.gui.povleci_potezo(i, j)
-			self.igra.zamenjaj()
+	def klik(self, i, j):
+		if not self.gui.konec:
+			self.gui.povleci_potezo(i, j)

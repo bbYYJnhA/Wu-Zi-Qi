@@ -10,7 +10,8 @@ class Gui():
 		
 		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))Racunalnik(self, Minimax(globina), CRNI)
 		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
-		
+		self.klik = None
+		self.konec = False
 		self.igralec1.igraj()
 		#Potrebno je popraviti rob plošče in dodati dodatne gumbe
 		#gumbe je potrebno spraviti tudi v delovanje
@@ -26,7 +27,8 @@ class Gui():
 		
 		self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.koncaj_igro)
 		self.gumb1.grid(row=1, column=1)
-
+		
+		self.plosca.bind('<Button-1>', self.klik_plosca)
 
 
 
@@ -36,7 +38,16 @@ class Gui():
 			self.plosca.create_line(0, i*36, 648, i*36)
 
 
-
+	def klik_plosca(self, event):
+		i = (event.x+18) // 36
+		j = (event.y+18) // 36
+		if self.igra.na_potezi == CRNI:
+			self.igralec1.klik(i, j)
+		elif self.igra.na_potezi == BELI:
+			self.igralec2.klik(i, j)
+		else:
+			assert False, "Neveljaven igralec klik"
+			
 	def narisi1(self, i, j):
 		x = i * 36
 		y = j * 36
@@ -56,20 +67,103 @@ class Gui():
 	def koncaj_igro(self):
 		aplikacija = Gui(root)
 		self.igra = Igra(self)
-		self.na_potezi.igraj()
+		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))Racunalnik(self, Minimax(globina), CRNI)
+		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
 
+	def preveri_zmago(self, j, i):
+		###Pri vrstici in stolpcu lahko poljubno igraš naprej in bo računalo vedno nove zmagovalne petorke. Pri diagonali pa vrne
+		###vedno prvo zmagovalno diagonalo ter barva krogca se ne spreminja.!!! (Če ustavimo igro ob zmagi, to ne bo problem!)
+		"""Preveri, če je konec in vrne trojko (Bool, zmagovalec, zmagovalna petorka)"""
+		dolzina = len(self.igra.tabela)
+		#Preveri vodoravno
+		#Izracuna prvi in zadnji clen zmagovalne petorke
+		#prvi = max(0, j-4)
+		#zadnji = min(j+4, 18)
+		vrstica = i
+		for stolpec in range(dolzina-4):
+			if self.igra.tabela[vrstica][stolpec] != 0:
+				ena = self.igra.tabela[vrstica][stolpec]
+				dva = self.igra.tabela[vrstica][stolpec+1]
+				tri = self.igra.tabela[vrstica][stolpec+2]
+				stiri = self.igra.tabela[vrstica][stolpec+3]
+				pet = self.igra.tabela[vrstica][stolpec+4]
+				#print("{0}{1}{2}{3}{4}".format(ena,dva,tri,stiri,pet))
+				if ena == dva == tri == stiri == pet:
+					self.konec = True
+					return (True, self.igra.na_potezi, \
+							[(vrstica,stolpec),(vrstica,stolpec+1),(vrstica,stolpec+2),(vrstica,stolpec+3),(vrstica,stolpec+4)])
+
+		# #Preveri navpično
+		# #prvi = max(0, i-4)
+		# #zadnji = min(i+4, 18)
+		stolpec = j
+		for vrstica in range(dolzina-4):
+			if self.igra.tabela[vrstica][stolpec] != 0:
+					ena = self.igra.tabela[vrstica][stolpec]
+					dva = self.igra.tabela[vrstica+1][stolpec]
+					tri = self.igra.tabela[vrstica+2][stolpec]
+					stiri = self.igra.tabela[vrstica+3][stolpec]
+					pet = self.igra.tabela[vrstica+4][stolpec]
+					if ena == dva == tri == stiri == pet:
+						self.konec = True
+						return (True, self.igra.na_potezi,\
+							[(vrstica,stolpec),(vrstica+1,stolpec),(vrstica+2,stolpec),(vrstica+3,stolpec),(vrstica+4,stolpec)])
+
+
+		for vrstica in range(4, dolzina):
+			for stolpec in range(0, dolzina-4):
+				if self.igra.tabela[vrstica][stolpec] != 0:
+					ena = self.igra.tabela[vrstica][stolpec]
+					dva = self.igra.tabela[vrstica-1][stolpec+1]
+					tri = self.igra.tabela[vrstica-2][stolpec+2]
+					stiri = self.igra.tabela[vrstica-3][stolpec+3]
+					pet = self.igra.tabela[vrstica-4][stolpec+4]
+					if ena == dva == tri == stiri == pet:
+						self.konec = True	
+						return (True, self.igra.na_potezi,\
+							[(vrstica,stolpec),(vrstica-1,stolpec+1),(vrstica-2,stolpec+2),(vrstica-3,stolpec+3),(vrstica-4,stolpec+4)])   
+
+		for vrstica in range(0, dolzina-4):
+			for stolpec in range(0, dolzina-4):
+				if self.igra.tabela[vrstica][stolpec] != 0:
+					ena = self.igra.tabela[vrstica][stolpec] 
+					dva = self.igra.tabela[vrstica+1][stolpec+1]
+					tri = self.igra.tabela[vrstica+2][stolpec+2]
+					stiri = self.igra.tabela[vrstica+3][stolpec+3]
+					pet = self.igra.tabela[vrstica+4][stolpec+4]
+					if ena == dva == tri == stiri == pet:
+						self.konec = True
+						return (True, self.igra.na_potezi,\
+							[(vrstica,stolpec),(vrstica+1,stolpec+1),(vrstica+2,stolpec+2),(vrstica+3,stolpec+3),(vrstica+4,stolpec+4)]) 
+		return (False, None, None)
+		
 	def povleci_potezo(self, i, j):
 		if self.igra.pravilna(i, j):
 			trenutni = self.igra.na_potezi
 			if self.igra.na_potezi == CRNI:
 				self.narisi1(i, j)
 				self.napis2.set("Na potezi je beli")
+				self.igra.povleci(i, j)
+				(kaj, kdo, kje) = self.preveri_zmago(i,j)
+				if kaj:
+					self.narisi_crto(kje)
+					self.konec = True
+					print(str(kdo))
+				else:
+					self.igralec2.igraj()
 			elif self.igra.na_potezi == BELI:
 				self.narisi2(i, j)
 				self.napis2.set("Na potezi je črni")
+				self.igra.povleci(i, j)
+				(kaj, kdo, kje) = self.preveri_zmago(i,j)
+				if kaj:
+					self.narisi_crto(kje)
+					self.konec = True
+					print(str(kdo))
+				else:
+					self.igralec1.igraj()
 			else:
 				assert False, "Neveljaven igralec poskuša povlect potezo."
-			self.igra.povleci(i, j)
 			
 		#else:
 		#	self.napis2.set("Igra je končana")

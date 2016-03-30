@@ -1,7 +1,15 @@
 ﻿import tkinter
+from tkinter import ttk
 from igra import*
 from clovek import*
 from racunalnik import*
+
+def sporocilo(msg, naslov):
+	popup = tkinter.Tk()
+	popup.wm_title(naslov)
+	label = ttk.Label(popup, text=msg)
+	label.pack(side="top", fill="x", pady=20)
+	popup.mainloop()
 
 class Gui():
 
@@ -9,7 +17,7 @@ class Gui():
 		self.igra = Igra(self)
 		
 		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))Racunalnik(self, Minimax(globina), CRNI)
-		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
+		self.igralec2 = Clovek(self, BELI)
 		self.klik = None
 		self.konec = False
 		self.igralec1.igraj()
@@ -63,11 +71,13 @@ class Gui():
 		(y1, x1) = kje[4]
 		self.plosca.create_line(x0 * 36, y0 * 36, x1 * 36, y1 * 36, fill="red", width="3")
 
+	def konec_igre_okno(self):
+		tkinter.messagebox("Say Hello", "Hello World")	
 
 	def koncaj_igro(self):
 		aplikacija = Gui(root)
 		self.igra = Igra(self)
-		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))Racunalnik(self, Minimax(globina), CRNI)
+		self.igralec1 = Clovek(self, CRNI)
 		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
 
 	def preveri_zmago(self, j, i):
@@ -141,26 +151,30 @@ class Gui():
 		if self.igra.pravilna(i, j):
 			trenutni = self.igra.na_potezi
 			if self.igra.na_potezi == CRNI:
-				self.narisi1(i, j)
-				self.napis2.set("Na potezi je beli")
+				self.narisi1(i, j)				
 				self.igra.povleci(i, j)
 				(kaj, kdo, kje) = self.preveri_zmago(i,j)
 				if kaj:
 					self.narisi_crto(kje)
 					self.konec = True
+					self.napis2.set("Zmagal je ČRNI")
+					sporocilo("     Zmagal je ČRNI     ", "Igre je konec")
 					print(str(kdo))
 				else:
+					self.napis2.set("Na potezi je beli")
 					self.igralec2.igraj()
 			elif self.igra.na_potezi == BELI:
-				self.narisi2(i, j)
-				self.napis2.set("Na potezi je črni")
+				self.narisi2(i, j)				
 				self.igra.povleci(i, j)
 				(kaj, kdo, kje) = self.preveri_zmago(i,j)
 				if kaj:
 					self.narisi_crto(kje)
 					self.konec = True
+					self.napis2.set("Zmagal je BELI")
+					sporocilo("     Zmagal je BELI     ", "Igre je konec")
 					print(str(kdo))
 				else:
+					self.napis2.set("Na potezi je črni")
 					self.igralec1.igraj()
 			else:
 				assert False, "Neveljaven igralec poskuša povlect potezo."

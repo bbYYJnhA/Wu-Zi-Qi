@@ -1,6 +1,3 @@
-from clovek import*
-from racunalnik import*
-
 CRNI = 1
 BELI = 2
 
@@ -17,9 +14,8 @@ def matrika_nicel(n, m):
 class Igra():
 	def __init__(self, gui):
 		self.tabela = matrika_nicel(19,19)
-		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))Racunalnik(self, Minimax(globina), CRNI)
-		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
-		self.na_potezi = self.igralec1
+
+		self.na_potezi = CRNI
 		self.gui = gui
 
 
@@ -67,10 +63,10 @@ class Igra():
 			self.konec = True
 		
 	def nasportnik(self):
-		if self.na_potezi == self.igralec1:
-			self.na_potezi = self.igralec2
-		elif self.na_potezi == self.igralec2:
-			self.na_potezi = self.igralec1
+		if self.na_potezi == CRNI:
+			self.na_potezi = BELI
+		elif self.na_potezi == BELI:
+			self.na_potezi = CRNI
 		else:
 		#	self.na_potezi = self.igralec1
 			assert False, "Neveljaven nasprotnik"
@@ -90,10 +86,9 @@ class Igra():
 			(kaj, kdo, kje) = self.preveri_zmago(i,j)
 			if kaj:
 				print(str(kdo.barva),str(kje))
-				self.gui.narisi_crto(kje)
-			#else:
-			#	self.nasportnik()
-			#	self.na_potezi.igraj()
+			else:
+				self.nasportnik()
+				self.gui.na_potezi.igraj()
 
 		#Ali je konec (to metodo bo poklical Gui - self.igra.preveri_konec(i,j))
 	def preveri_zmago(self, j, i):

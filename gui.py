@@ -1,10 +1,17 @@
 ﻿import tkinter
 from igra import*
 from clovek import*
+from racunalnik import*
 
 class Gui():
 
 	def __init__(self, master):
+		self.igra = Igra(self)
+		
+		self.igralec1 = Clovek(self, CRNI)#, Minimax(globina))Racunalnik(self, Minimax(globina), CRNI)
+		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
+		
+		self.igralec1.igraj()
 		#Potrebno je popraviti rob plošče in dodati dodatne gumbe
 		#gumbe je potrebno spraviti tudi v delovanje
 		self.napis1 = tkinter.StringVar(master, value="Dobrodošli v 五子棋")
@@ -19,40 +26,22 @@ class Gui():
 		
 		self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.koncaj_igro)
 		self.gumb1.grid(row=1, column=1)
-		# gumn, ki razveljavi potezo ...
 
-		self.gumb2 = tkinter.Button(master, text="Razveljavi", command=self.razveljavi_gumb)
-		self.gumb2.grid(row=2, column=1)
 
-		self.gumb3 = tkinter.Button(master, text="Računalnik črni", command=self.rac_crni)
-		self.gumb3.grid(row=3, column=1)
 
-		self.gumb4 = tkinter.Button(master, text="Računalnik beli", command=self.rac_beli)
-		self.gumb4.grid(row=4, column=1)
 
 		#!!! manjkata dve črti !!!
 		for i in range(18):
 			self.plosca.create_line(i*36, 0, i*36, 648)
 			self.plosca.create_line(0, i*36, 648, i*36)
-			#self.izbira_igralcev()
 
-		self.igra = Igra(self)
-		self.igra.na_potezi.igraj()
 
-	def rac_crni(self):
-		self.igra.igralec1 = Racunalnik(self)
-		self.igra.na_potezi.igraj()
-	def rac_beli(self):
-		self.igra.igralec2 = Racunalnik(self)
-		self.igra.na_potezi.igraj()
-	def razveljavi_gumb(self):
-		self.igra.razveljavi
-		self.napis2.set("Razveljavitev gotovo ni grafično podprta")
 
 	def narisi1(self, i, j):
 		x = i * 36
 		y = j * 36
 		self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="black")
+		
 	def narisi2(self, i, j):
 		x = i * 36
 		y = j * 36
@@ -67,17 +56,21 @@ class Gui():
 	def koncaj_igro(self):
 		aplikacija = Gui(root)
 		self.igra = Igra(self)
-		self.igra.na_potezi.igraj()
+		self.na_potezi.igraj()
 
 	def povleci_potezo(self, i, j):
 		if self.igra.pravilna(i, j):
-			if self.igra.na_potezi == self.igra.igralec1:
+			trenutni = self.igra.na_potezi
+			if self.igra.na_potezi == CRNI:
 				self.narisi1(i, j)
 				self.napis2.set("Na potezi je beli")
-			else:
+			elif self.igra.na_potezi == BELI:
 				self.narisi2(i, j)
 				self.napis2.set("Na potezi je črni")
+			else:
+				assert False, "Neveljaven igralec poskuša povlect potezo."
 			self.igra.povleci(i, j)
+			
 		#else:
 		#	self.napis2.set("Igra je končana")
 

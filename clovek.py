@@ -1,5 +1,5 @@
 class Clovek():
-    def __init__(self, gui, barva, tezavnost=None):
+    def __init__(self, gui, racunalnik, barva, tezavnost=None):
         self.gui = gui
         self.barva = barva
         

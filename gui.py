@@ -16,8 +16,8 @@ class Gui():
 	def __init__(self, master):
 		self.igra = Igra(self)
 		
-		self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)#Clovek(self, CRNI)#, Minimax(globina))
 		self.igralec1 = Clovek(self, CRNI)
+		self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)#Clovek(self,BELI)
 		self.klik = None
 		self.konec = False
 		self.igralec1.igraj()
@@ -30,7 +30,7 @@ class Gui():
 		self.napis2 = tkinter.StringVar(master, value="Na potezi je črni")
 		tkinter.Label(master, textvariable=self.napis2).grid(row=42, column=0)
 
-		self.plosca = tkinter.Canvas(master, width=648, height=648, bg = "green", borderwidth=0)
+		self.plosca = tkinter.Canvas(master, width=648+36, height=648+36, bg = "green", borderwidth=0)
 		self.plosca.grid(row=1, column=0, columnspan=1, rowspan=41)
 		
 		self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.koncaj_igro)
@@ -42,19 +42,20 @@ class Gui():
 
 		#!!! manjkata dve črti !!!
 		for i in range(18):
-			self.plosca.create_line(i*36, 0, i*36, 648)
-			self.plosca.create_line(0, i*36, 648, i*36)
+			self.plosca.create_line(i*36+36, 0+36, i*36+36, 648)
+			self.plosca.create_line(0+36, i*36+36, 648, i*36+36)
 
 
 	def klik_plosca(self, event):
 		i = (event.x+18) // 36
 		j = (event.y+18) // 36
-		if self.igra.na_potezi == CRNI:
-			self.igralec1.klik(i, j)
-		elif self.igra.na_potezi == BELI:
-			self.igralec2.klik(i, j)
-		else:
-			assert False, "Neveljaven igralec klik"
+		if i > 0 and j > 0 and i < 19 and j < 19:
+			if self.igra.na_potezi == CRNI:
+				self.igralec1.klik(i, j)
+			elif self.igra.na_potezi == BELI:
+				self.igralec2.klik(i, j)
+			else:
+				assert False, "Neveljaven igralec klik"
 			
 	def narisi1(self, i, j):
 		x = i * 36
@@ -78,7 +79,7 @@ class Gui():
 		aplikacija = Gui(root)
 		self.igra = Igra(self)
 		self.igralec1 = Clovek(self, CRNI)
-		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)
+		self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)
 
 	def preveri_zmago(self, j, i):
 		###Pri vrstici in stolpcu lahko poljubno igraš naprej in bo računalo vedno nove zmagovalne petorke. Pri diagonali pa vrne

@@ -98,30 +98,48 @@ class Minimax():
             if niz.count("11111") > 0:
                 vrednost += ZMAGA
                 return vrednost
-            ponovitve = niz.count("011110")
-            if ponovitve > 0:
-                vrednost += ponovitve * ZMAGA//2
-            ponovitve = niz.count("01110") 
-            if ponovitve  > 0:
-                vrednost += ponovitve * ZMAGA//3
-            ponovitve = niz.count("10111") 
-            if ponovitve > 0:       
-                vrednost += ponovitve * ZMAGA//5
-            ponovitve = niz.count("11011") 
-            if ponovitve > 0:       
-                vrednost += ponovitve * ZMAGA//5
-            ponovitve = niz.count("11101") 
-            if ponovitve > 0:       
-                vrednost += ponovitve * ZMAGA//5
-            ponovitve = niz.count("11110") 
-            if ponovitve > 0:       
-                vrednost += ponovitve * ZMAGA//5
-            ponovitve = niz.count("01111") 
-            if ponovitve > 0:       
-                vrednost += ponovitve * ZMAGA//5
-            ponovitve = niz.count("01110") 
-            if ponovitve > 0:       
-                vrednost += ponovitve * ZMAGA//12
+
+            elif niz.count("011110") > 0:
+                vrednost += ZMAGA//2
+            #elif niz.count("01110") > 0:
+            #   vrednost += ZMAGA//3
+            elif niz.count("10111") > 0:        
+                vrednost += ZMAGA//5
+            elif niz.count("11011") > 0:        
+                vrednost += ZMAGA//5
+            elif niz.count("11101") > 0:        
+                vrednost += ZMAGA//5
+            elif niz.count("11110") > 0:        
+                vrednost += ZMAGA//5
+            elif niz.count("01111") > 0:        
+                vrednost += ZMAGA//5
+            elif niz.count("01110") > 0:        
+                vrednost += ZMAGA//12
+
+            # ponovitve = niz.count("011110")
+            # if ponovitve > 0:
+            #     vrednost += ponovitve * ZMAGA//2
+            # ponovitve = niz.count("01110") 
+            # if ponovitve  > 0:
+            #     vrednost += ponovitve * ZMAGA//3
+            # ponovitve = niz.count("10111") 
+            # if ponovitve > 0:       
+            #     vrednost += ponovitve * ZMAGA//5
+            # ponovitve = niz.count("11011") 
+            # if ponovitve > 0:       
+            #     vrednost += ponovitve * ZMAGA//5
+            # ponovitve = niz.count("11101") 
+            # if ponovitve > 0:       
+            #     vrednost += ponovitve * ZMAGA//5
+            # ponovitve = niz.count("11110") 
+            # if ponovitve > 0:       
+            #     vrednost += ponovitve * ZMAGA//5
+            # ponovitve = niz.count("01111") 
+            # if ponovitve > 0:       
+            #     vrednost += ponovitve * ZMAGA//5
+            # ponovitve = niz.count("01110") 
+            # if ponovitve > 0:       
+            #     vrednost += ponovitve * ZMAGA//12
             
             for el in crni_boljsi:
                 dolzina = len(el)
@@ -144,29 +162,45 @@ class Minimax():
             niz = "1" + niz + "1"
             vrednost = 0
             if niz.count("22222") > 0:
-                vrednost += ZMAGA
+                vrednost += ZMAGA//2
                 return vrednost 
-            ponovitve = niz.count("022220")
-            if ponovitve  > 0:
-               vrednost += ponovitve * ZMAGA//5
-            ponovitve = niz.count("02220")
-            if ponovitve > 0:
-                vrednost += ZMAGA//12
-            ponovitve = niz.count("20222") 
-            if ponovitve > 0:       
-                vrednost +=ponovitve * ZMAGA//10
-            ponovitve = niz.count("22022") 
-            if ponovitve > 0:       
-                vrednost +=ponovitve * ZMAGA//10
-            ponovitve = niz.count("22202") 
-            if ponovitve > 0:       
-                vrednost +=ponovitve * ZMAGA//10
-            ponovitve = niz.count("22220") 
-            if ponovitve > 0:       
-                vrednost +=ponovitve *  ZMAGA//10
-            ponovitve = niz.count("02222") 
-            if ponovitve > 0:       
-                vrednost +=ponovitve * ZMAGA//10
+            
+            elif niz.count("022220") > 0:
+                vrednost += ZMAGA//5
+            #elif niz.count("02220") > 0: #and barva == BELI:
+            #   vrednost += ZMAGA//3
+            elif niz.count("20222") > 0:        
+                vrednost += ZMAGA//10
+            elif niz.count("22022") > 0:        
+                vrednost += ZMAGA//10
+            elif niz.count("22202") > 0:        
+                vrednost += ZMAGA//10
+            elif niz.count("22220") > 0:        
+                vrednost += ZMAGA//10
+            elif niz.count("02222") > 0:        
+                vrednost += ZMAGA//10
+            
+            # ponovitve = niz.count("022220")
+            # if ponovitve  > 0:
+            #    vrednost += ponovitve * ZMAGA//5
+            # ponovitve = niz.count("02220")
+            # if ponovitve > 0:
+            #     vrednost += ZMAGA//20
+            # ponovitve = niz.count("20222") 
+            # if ponovitve > 0:       
+            #     vrednost +=ponovitve * ZMAGA//10
+            # ponovitve = niz.count("22022") 
+            # if ponovitve > 0:       
+            #     vrednost +=ponovitve * ZMAGA//10
+            # ponovitve = niz.count("22202") 
+            # if ponovitve > 0:       
+            #     vrednost +=ponovitve * ZMAGA//10
+            # ponovitve = niz.count("22220") 
+            # if ponovitve > 0:       
+            #     vrednost +=ponovitve *  ZMAGA//10
+            # ponovitve = niz.count("02222") 
+            # if ponovitve > 0:       
+            #     vrednost +=ponovitve * ZMAGA//10
 
             for el in beli_slabsi:
                 dolzina = len(el)
@@ -187,7 +221,7 @@ class Minimax():
                 nizek = ""
                 for znak in vrstica:
                     nizek += str(znak)
-                rezultat += crni(nizek, barva) - beli(nizek, barva)
+                rezultat += 2*crni(nizek, barva) - beli(nizek, barva)
             return rezultat
 
         def vrednost_stolpcev(tabela, barva):

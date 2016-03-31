@@ -2,7 +2,7 @@ import threading
 import random
 import numpy as np
 
-globina = 2
+
 CRNI = 1
 BELI = 2
 
@@ -30,13 +30,14 @@ def drug_igralec(igralec):
     else:
         assert False, "Napacen igralec v drug_igralec"
     
-
+##################################################################################################################################
 class Racunalnik():
     def __init__(self, gui, algoritem, barva):
         self.gui = gui
         self.barva = self.gui.igra.na_potezi
         self.algoritem = algoritem
         self.mislec = None
+
 
     def igraj(self):
         self.mislec = threading.Thread(target=lambda: self.algoritem.izracunaj_potezo(self.gui.igra.kopija()))
@@ -62,8 +63,8 @@ class Racunalnik():
     # lahko da vlakna to že sama po sebi to rešijo
     def klik(self, i, j):
         pass
-
-class Minimax():
+#################################################################################################################################
+class Alfabeta():
     def __init__(self, globina):
         self.igra = None
         self.prekinitev = False
@@ -78,11 +79,11 @@ class Minimax():
         self.prekinitev = False
         self.jaz = self.igra.na_potezi
         self.poteza = None
-        (poteza, vrednost) = self.minimax(self.globina, -10000000000, 10000000000,True, self.jaz)
+        (poteza, vrednost) = self.alfabeta(self.globina, -10000000000, 10000000000,True, self.jaz)
         self.jaz = None
         self.igra = None
         if not self.prekinitev:
-            print("minimax: poteza {0}, vrednost {1}".format(poteza, vrednost))
+            print("alfabeta: poteza {0}, vrednost {1}".format(poteza, vrednost))
             self.poteza = poteza
 
 ################################################################################################################################            
@@ -225,7 +226,6 @@ class Minimax():
             return rezultat
 
         def vrednost_stolpcev(tabela, barva):
-            #trans = numpy.array(tabela).transpose()
             stolpci = [list(x) for x in zip(*tabela)]
             return vrednost_vrstic(stolpci, barva)
 
@@ -252,9 +252,9 @@ class Minimax():
             assert False, "Napacna barva v vrednost_skupaj"
 ##################################################################################################################################
     
-    def minimax(self, globina, alfa, beta, maksimiziramo, trenutni):        
+    def alfabeta(self, globina, alfa, beta, maksimiziramo, trenutni):        
         if self.prekinitev:
-            print("Minimax prekinja")
+            print("alfabeta prekinja")
             return (None, 0)
         #print("{0} {1} {2}".format(globina, maksimiziramo, trenutni))
 
@@ -276,7 +276,7 @@ class Minimax():
             for (iv, ist) in smiselne_pozicije(self.igra.poteze):
                 if self.igra.tabela[ist][iv] == 0:
                     self.igra.povleci_racunalnik(iv, ist)
-                    vr1 = self.minimax(globina-1, alfa, beta, not maksimiziramo, drug_igralec(trenutni))[1]
+                    vr1 = self.alfabeta(globina-1, alfa, beta, not maksimiziramo, drug_igralec(trenutni))[1]
                     self.igra.razveljavi()
                     if vr1 > vrednostnajpoteze:
                         vrednostnajpoteze = vr1
@@ -291,7 +291,7 @@ class Minimax():
             for (iv, ist) in smiselne_pozicije(self.igra.poteze):
                 if self.igra.tabela[ist][iv] == 0:
                     self.igra.povleci_racunalnik(iv, ist)
-                    vr1 = self.minimax(globina-1, alfa, beta, not maksimiziramo, drug_igralec(trenutni))[1]
+                    vr1 = self.alfabeta(globina-1, alfa, beta, not maksimiziramo, drug_igralec(trenutni))[1]
                     self.igra.razveljavi()
                     if vr1 < vrednostnajpoteze:
                         vrednostnajpoteze = vr1
@@ -300,7 +300,7 @@ class Minimax():
                         beta = vr1
                     if beta <= alfa:
                         break
-        assert (najpoteza is not None), "minimax: izračunana poteza je None"
+        assert (najpoteza is not None), "alfabeta: izračunana poteza je None"
         return (najpoteza, vrednostnajpoteze)
 
 

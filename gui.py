@@ -16,7 +16,7 @@ class Gui():
 	def __init__(self, master):
 		self.igra = Igra(self)
 		
-		self.igralec2 = Racunalnik(self, Minimax(globina), BELI)#Clovek(self, CRNI)#, Minimax(globina))
+		self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)#Clovek(self, CRNI)#, Minimax(globina))
 		self.igralec1 = Clovek(self, CRNI)
 		self.klik = None
 		self.konec = False

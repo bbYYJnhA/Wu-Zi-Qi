@@ -8,13 +8,6 @@ from racunalnik import*
 CRNA = 1
 BELA = 2
 
-def sporocilo(msg, naslov):
-    popup = tkinter.Tk()
-    popup.wm_title(naslov)
-    label = ttk.Label(popup, text=msg)
-    label.pack(side="top", fill="x", pady=20)
-    popup.mainloop()
-
 class Gui():
 
     def __init__(self, master):
@@ -43,7 +36,7 @@ class Gui():
         # Podmeni Igra
         menu_igra = tkinter.Menu(menu)
         menu.add_cascade(label="Igra", menu=menu_igra)
-        menu_igra.add_command(label="Nova igra", command=self.koncaj_igro)
+        menu_igra.add_command(label="Nova igra", command=self.nova_igra_gumb)
         menu_igra.add_command(label="Izhod", command=master.destroy)
 
         for i in range(19):
@@ -55,18 +48,32 @@ class Gui():
         self.klik = None
         self.konec = False
         self.igralec1.igraj()
-        
-    def nova_igra(self, crni, beli, tezavnost=2):
+
+    def sporocilo(self, msg, naslov):
+        popup = tkinter.Tk()
+        #popup.grab_set()
+        popup.wm_title(naslov)
+        label = ttk.Label(popup, text=msg)
+        label.pack(side="top", fill="x", pady=20)
+        popup.mainloop()
+
+    def nova_igra(self, igralec1, igralec2, tezavnost=2):
         if self.igralec1 is not None:
             self.igralec1.prekini()
         if self.igralec2 is not None:
             self.igralec2.prekini()
         #self.igralec1 = igralec1(self, )
-        aplikacija = Gui(root)
-        self.igra = Igra(self)
-        self.crni = crni(self, Alfabeta(tezavnost), CRNI)
-        self.beli = beli(self, Alfabeta(tezavnost), BELI)
-        self.crni.igraj()
+        #aplikacija = Gui(root)        
+        self.igralec1 = igralec1(self, Alfabeta(tezavnost), CRNI)
+        self.igralec2 = igralec2(self, Alfabeta(tezavnost), BELI)
+        self.klik = None
+        self.konec = False
+        self.igra = Igra(self)        
+        
+        self.plosca.delete("figure")
+        self.plosca.delete("crta")
+        self.napis2.set("Na potezi je ČRNI")
+        self.igralec1.igraj()
 
     def nova_igra_gumb(self):
         """Ustvari okno za izbiro nastavitev nove igre (če ne obstaja) ter začne novo igro, z izbranimi nastavitvami."""
@@ -101,7 +108,7 @@ class Gui():
         # Nastavitve težavnosti
         # ---------------------------------------------------------
         tk.Label(new_game, text="Izberite težavnost:").grid(row=1, column=1, sticky="W")
-        tezavnosti = [("Težko", 2), ("Lahko", 1)]  # Možne težavnosti
+        tezavnosti = [("Težko", 3) ,("Srednje", 2), ("Lahko", 1)]  # Možne težavnosti
         izbrana_tezavnost = tk.IntVar()                            # Spremenljivka kamor shranimo izbrano težavnost
         izbrana_tezavnost.set(2)                                   # Nastavitev privzete vrednosti
 
@@ -155,17 +162,17 @@ class Gui():
     def narisi1(self, i, j):
         x = i * 36
         y = j * 36
-        self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="black")
+        self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="black", tags="figure")
         
     def narisi2(self, i, j):
         x = i * 36
         y = j * 36
-        self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="white")     
+        self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="white", tags="figure")     
 
     def narisi_crto(self, kje):
         (y0, x0) = kje[0]
         (y1, x1) = kje[4]
-        self.plosca.create_line((x0+1) * 36, (y0+1) * 36, (x1+1) * 36, (y1+1) * 36, fill="red", width="3") 
+        self.plosca.create_line((x0+1) * 36, (y0+1) * 36, (x1+1) * 36, (y1+1) * 36, fill="red", width="3", tag="crta") 
 
     def koncaj_igro(self):
         aplikacija = Gui(root)
@@ -253,7 +260,7 @@ class Gui():
                     self.narisi_crto(kje)
                     self.konec = True
                     self.napis2.set("Zmagal je ČRNI")
-                    sporocilo("     Zmagal je ČRNI     ", "Igre je konec")
+                    self.sporocilo("     Zmagal je ČRNI     ", "Igre je konec")
                     print(str(kdo))
                 else:
                     self.napis2.set("Na potezi je beli")
@@ -266,7 +273,7 @@ class Gui():
                     self.narisi_crto(kje)
                     self.konec = True
                     self.napis2.set("Zmagal je BELI")
-                    sporocilo("     Zmagal je BELI     ", "Igre je konec")
+                    self.sporocilo("     Zmagal je BELI     ", "Igre je konec")
                     print(str(kdo))
                 else:
                     self.napis2.set("Na potezi je črni")

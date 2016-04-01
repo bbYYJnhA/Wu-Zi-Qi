@@ -68,7 +68,6 @@ class Igra():
     def povleci_racunalnik(self, i, j):
         if self.pravilna(i,j):
             self.tabela[j][i] = self.na_potezi
-            print(self.tabela)
             self.poteze += [(i, j)]
             #self.nasportnik()
             #self.na_potezi.igraj() 

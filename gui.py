@@ -20,11 +20,6 @@ class Gui():
     def __init__(self, master):
         self.igra = Igra(self)
         
-        self.igralec1 = Clovek(self, Alfabeta(2), CRNI)
-        self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)
-        self.klik = None
-        self.konec = False
-        self.igralec1.igraj()
         #Potrebno je popraviti rob plošče in dodati dodatne gumbe
         #gumbe je potrebno spraviti tudi v delovanje
         self.napis1 = tkinter.StringVar(master, value="Dobrodošli v 五子棋")
@@ -33,14 +28,14 @@ class Gui():
         self.napis2 = tkinter.StringVar(master, value="Na potezi je črni")
         tkinter.Label(master, textvariable=self.napis2).grid(row=42, column=0)
 
-        self.plosca = tkinter.Canvas(master, width=648+36+36, height=648+36+36, bg = "green", borderwidth=0)
+        self.plosca = tkinter.Canvas(master, width=648+36+36, height=648+36+36, bg = "lightblue", borderwidth=0)
         self.plosca.grid(row=1, column=0, columnspan=1, rowspan=41)
         
-        self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.koncaj_igro)
+        self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.nova_igra_gumb)
         self.gumb1.grid(row=1, column=1)
         
         self.plosca.bind('<Button-1>', self.klik_plosca)
-
+        
         # Glavni meni
         menu = tkinter.Menu(master)
         master.config(menu=menu)
@@ -54,9 +49,23 @@ class Gui():
         for i in range(19):
             self.plosca.create_line(i*36+36, 0+36, i*36+36, 648+36)
             self.plosca.create_line(0+36, i*36+36, 648+36, i*36+36)
+        
+        self.igralec2 = Clovek(self, Alfabeta(2), CRNI)
+        self.igralec1 = Racunalnik(self, Alfabeta(2), BELI)
+        self.klik = None
+        self.konec = False
+        self.igralec1.igraj()
+        
     def nova_igra(self, crni, beli, tezavnost=2):
-        self.crni = crni(self, Alfabeta(tezavnost), CRNA)
-        self.beli = beli(self, Alfabeta(tezavnost), BELA)
+        if self.igralec1 is not None:
+            self.igralec1.prekini()
+        if self.igralec2 is not None:
+            self.igralec2.prekini()
+        #self.igralec1 = igralec1(self, )
+        aplikacija = Gui(root)
+        self.igra = Igra(self)
+        self.crni = crni(self, Alfabeta(tezavnost), CRNI)
+        self.beli = beli(self, Alfabeta(tezavnost), BELI)
         self.crni.igraj()
 
     def nova_igra_gumb(self):

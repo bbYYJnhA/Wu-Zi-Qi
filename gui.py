@@ -48,6 +48,9 @@ class Gui():
         self.igralec1.igraj()
 
     def sporocilo(self, msg, naslov):
+        """
+        Funkcija odpre novo okno, z vsebino sporočina in naslovom podanim v funkciji.
+        """
         popup = tkinter.Tk()
         #popup.grab_set()
         popup.wm_title(naslov)
@@ -56,6 +59,10 @@ class Gui():
         popup.mainloop()
 
     def nova_igra(self, igralec1, igralec2, tezavnost=2):
+        """
+        Funkcija prekine že obstoječo igro in nastavi novo glede na parametre,
+        ki jih naklika uporabnik v gui.
+        """
         if self.igralec1 is not None:
             self.igralec1.prekini()
         if self.igralec2 is not None:
@@ -147,6 +154,9 @@ class Gui():
 
 
     def klik_plosca(self, event):
+        """
+        Nariše črne oz. bele krogce na polje.
+        """
         x = ((event.x + 18) // 36)
         y = ((event.y + 18) // 36)
         if x > 0 and y > 0 and x < 20 and y < 20:
@@ -158,21 +168,34 @@ class Gui():
                 assert False, "Neveljaven igralec klik"
             
     def narisi1(self, i, j):
+        """
+        Funkcija riše črne krogce.
+        """
         x = i * 36
         y = j * 36
         self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="black", tags="figure")
         
     def narisi2(self, i, j):
+        """
+        Funkcija riše bele krogce.
+        """
         x = i * 36
         y = j * 36
         self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="white", tags="figure")     
 
     def narisi_crto(self, kje):
+        """
+        Funkcija nariše črto, glede na to kje ji podamo začetno in končno koortinato.
+        Uporablja se za povezovanje figur zmagovalne kombinacije.
+        """
         (y0, x0) = kje[0]
         (y1, x1) = kje[4]
         self.plosca.create_line((x0+1) * 36, (y0+1) * 36, (x1+1) * 36, (y1+1) * 36, fill="red", width="3", tag="crta") 
 
     def koncaj_igro(self):
+        """
+        Funkcija konča igro, in začne novo s privzetimi igralci Clovek vs Racunalnik
+        """
         aplikacija = Gui(root)
         self.igra = Igra(self)
         self.igralec1 = Clovek(self, Alfabeta(2) , CRNI)
@@ -237,6 +260,9 @@ class Gui():
         return (False, None, None)
         
     def povleci_potezo(self, x, y):
+        """
+        Funkcija naredi in nariše potezo.
+        """
         i = x - 1
         j = y - 1
         if self.igra.pravilna(i, j):

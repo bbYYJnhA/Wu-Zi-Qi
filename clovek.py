@@ -10,6 +10,6 @@ class Clovek():
     def prekini(self):
         pass
 
-    def klik(self, i, j):
+    def klik(self, x, y):
         if not self.gui.konec:
-            self.gui.povleci_potezo(i, j)
+            self.gui.povleci_potezo(x, y)

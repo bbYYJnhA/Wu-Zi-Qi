@@ -33,7 +33,7 @@ class Gui():
         self.napis2 = tkinter.StringVar(master, value="Na potezi je črni")
         tkinter.Label(master, textvariable=self.napis2).grid(row=42, column=0)
 
-        self.plosca = tkinter.Canvas(master, width=648+36, height=648+36, bg = "green", borderwidth=0)
+        self.plosca = tkinter.Canvas(master, width=648+36+36, height=648+36+36, bg = "green", borderwidth=0)
         self.plosca.grid(row=1, column=0, columnspan=1, rowspan=41)
         
         self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.koncaj_igro)
@@ -51,9 +51,9 @@ class Gui():
         menu_igra.add_command(label="Nova igra", command=self.koncaj_igro)
         menu_igra.add_command(label="Izhod", command=master.destroy)
 
-        for i in range(18):
-            self.plosca.create_line(i*36+36, 0+36, i*36+36, 648)
-            self.plosca.create_line(0+36, i*36+36, 648, i*36+36)
+        for i in range(19):
+            self.plosca.create_line(i*36+36, 0+36, i*36+36, 648+36)
+            self.plosca.create_line(0+36, i*36+36, 648+36, i*36+36)
     def nova_igra(self, crni, beli, tezavnost=2):
         self.crni = crni(self, Alfabeta(tezavnost), CRNA)
         self.beli = beli(self, Alfabeta(tezavnost), BELA)
@@ -133,13 +133,13 @@ class Gui():
 
 
     def klik_plosca(self, event):
-        i = (event.x+18) // 36
-        j = (event.y+18) // 36
-        if i > 0 and j > 0 and i < 19 and j < 19:
+        x = ((event.x + 18) // 36)
+        y = ((event.y + 18) // 36)
+        if x > 0 and y > 0 and x < 20 and y < 20:
             if self.igra.na_potezi == CRNI:
-                self.igralec1.klik(i, j)
+                self.igralec1.klik(x, y)
             elif self.igra.na_potezi == BELI:
-                self.igralec2.klik(i, j)
+                self.igralec2.klik(x, y)
             else:
                 assert False, "Neveljaven igralec klik"
             
@@ -156,7 +156,7 @@ class Gui():
     def narisi_crto(self, kje):
         (y0, x0) = kje[0]
         (y1, x1) = kje[4]
-        self.plosca.create_line(x0 * 36, y0 * 36, x1 * 36, y1 * 36, fill="red", width="3") 
+        self.plosca.create_line((x0+1) * 36, (y0+1) * 36, (x1+1) * 36, (y1+1) * 36, fill="red", width="3") 
 
     def koncaj_igro(self):
         aplikacija = Gui(root)
@@ -231,11 +231,13 @@ class Gui():
                             [(vrstica,stolpec),(vrstica+1,stolpec+1),(vrstica+2,stolpec+2),(vrstica+3,stolpec+3),(vrstica+4,stolpec+4)]) 
         return (False, None, None)
         
-    def povleci_potezo(self, i, j):
+    def povleci_potezo(self, x, y):
+        i = x - 1
+        j = y - 1
         if self.igra.pravilna(i, j):
             trenutni = self.igra.na_potezi
             if self.igra.na_potezi == CRNI:
-                self.narisi1(i, j)              
+                self.narisi1(x, y)              
                 self.igra.povleci(i, j)
                 (kaj, kdo, kje) = self.preveri_zmago(i,j)
                 if kaj:
@@ -248,7 +250,7 @@ class Gui():
                     self.napis2.set("Na potezi je beli")
                     self.igralec2.igraj()
             elif self.igra.na_potezi == BELI:
-                self.narisi2(i, j)              
+                self.narisi2(x, y)              
                 self.igra.povleci(i, j)
                 (kaj, kdo, kje) = self.preveri_zmago(i,j)
                 if kaj:

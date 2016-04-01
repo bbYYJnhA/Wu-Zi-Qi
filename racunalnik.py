@@ -47,7 +47,7 @@ class Racunalnik():
     def preveri_potezo(self):
         if self.algoritem.poteza is not None:
             (i, j) = self.algoritem.poteza
-            self.gui.povleci_potezo(i, j)
+            self.gui.povleci_potezo(i+1, j+1)
             self.mislec = None
         else:
             self.gui.plosca.after(100, self.preveri_potezo)

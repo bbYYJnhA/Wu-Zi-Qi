@@ -13,8 +13,6 @@ class Gui():
     def __init__(self, master):
         self.igra = Igra(self)
         
-        #Potrebno je popraviti rob plošče in dodati dodatne gumbe
-        #gumbe je potrebno spraviti tudi v delovanje
         self.napis1 = tkinter.StringVar(master, value="Dobrodošli v 五子棋")
         tkinter.Label(master, textvariable=self.napis1).grid(row=0, column=0)
 
@@ -43,8 +41,8 @@ class Gui():
             self.plosca.create_line(i*36+36, 0+36, i*36+36, 648+36)
             self.plosca.create_line(0+36, i*36+36, 648+36, i*36+36)
         
-        self.igralec2 = Clovek(self, Alfabeta(2), CRNI)
-        self.igralec1 = Racunalnik(self, Alfabeta(2), BELI)
+        self.igralec1 = Clovek(self, Alfabeta(2), CRNI)
+        self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)
         self.klik = None
         self.konec = False
         self.igralec1.igraj()
@@ -181,14 +179,9 @@ class Gui():
         self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)
 
     def preveri_zmago(self, j, i):
-        ###Pri vrstici in stolpcu lahko poljubno igraš naprej in bo računalo vedno nove zmagovalne petorke. Pri diagonali pa vrne
-        ###vedno prvo zmagovalno diagonalo ter barva krogca se ne spreminja.!!! (Če ustavimo igro ob zmagi, to ne bo problem!)
         """Preveri, če je konec in vrne trojko (Bool, zmagovalec, zmagovalna petorka)"""
         dolzina = len(self.igra.tabela)
-        #Preveri vodoravno
-        #Izracuna prvi in zadnji clen zmagovalne petorke
-        #prvi = max(0, j-4)
-        #zadnji = min(j+4, 18)
+
         vrstica = i
         for stolpec in range(dolzina-4):
             if self.igra.tabela[vrstica][stolpec] != 0:
@@ -197,15 +190,11 @@ class Gui():
                 tri = self.igra.tabela[vrstica][stolpec+2]
                 stiri = self.igra.tabela[vrstica][stolpec+3]
                 pet = self.igra.tabela[vrstica][stolpec+4]
-                #print("{0}{1}{2}{3}{4}".format(ena,dva,tri,stiri,pet))
                 if ena == dva == tri == stiri == pet:
                     self.konec = True
                     return (True, self.igra.na_potezi, \
                             [(vrstica,stolpec),(vrstica,stolpec+1),(vrstica,stolpec+2),(vrstica,stolpec+3),(vrstica,stolpec+4)])
 
-        # #Preveri navpično
-        # #prvi = max(0, i-4)
-        # #zadnji = min(i+4, 18)
         stolpec = j
         for vrstica in range(dolzina-4):
             if self.igra.tabela[vrstica][stolpec] != 0:
@@ -261,7 +250,6 @@ class Gui():
                     self.konec = True
                     self.napis2.set("Zmagal je ČRNI")
                     self.sporocilo("     Zmagal je ČRNI     ", "Igre je konec")
-                    print(str(kdo))
                 else:
                     self.napis2.set("Na potezi je beli")
                     self.igralec2.igraj()
@@ -274,15 +262,12 @@ class Gui():
                     self.konec = True
                     self.napis2.set("Zmagal je BELI")
                     self.sporocilo("     Zmagal je BELI     ", "Igre je konec")
-                    print(str(kdo))
                 else:
                     self.napis2.set("Na potezi je črni")
                     self.igralec1.igraj()
             else:
                 assert False, "Neveljaven igralec poskuša povlect potezo."
             
-        #else:
-        #   self.napis2.set("Igra je končana")
 
 if __name__ == "__main__":
     # Naredimo glavno okno in nastavimo ime

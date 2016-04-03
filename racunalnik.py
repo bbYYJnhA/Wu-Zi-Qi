@@ -36,7 +36,7 @@ def drug_igralec(igralec):
     elif igralec == BELI:
         return CRNI
     else:
-        assert False, "Napacen igralec v drug_igralec"
+        assert False, "Napačen igralec v drug_igralec"
     
 ##################################################################################################################################
 class Racunalnik():
@@ -47,7 +47,7 @@ class Racunalnik():
 
 
     def igraj(self):
-        """Požene vlakno in vsaih 100 ms preveri, če je poteza že izračunana."""
+        """Požene vlakno in vsakih 100 ms preveri, če je poteza že izračunana."""
         self.mislec = threading.Thread(target=lambda: self.algoritem.izracunaj_potezo(self.gui.igra.kopija()))
         self.mislec.start()
         self.gui.plosca.after(100, self.preveri_potezo)
@@ -69,7 +69,7 @@ class Racunalnik():
             self.mislec = None
 
     def klik(self, i, j):
-        """Računalnik ne klika, zato je ta funkcija tu zgolj zaradi formalnosti"""
+        """Računalnik ne klika, zato je ta funkcija tu zgolj zaradi formalnosti."""
         pass
 #################################################################################################################################
 class Alfabeta():
@@ -80,7 +80,7 @@ class Alfabeta():
         self.poteza = None
 
     def prekini(self):
-        """Če uporabnik zahteva prekinitev, se prekinitev nastavi na True"""
+        """Če uporabnik zahteva prekinitev, se atribut self.prekinitev nastavi na True."""
         self.prekinitev = True
 
     def izracunaj_potezo(self, igra):
@@ -106,7 +106,8 @@ class Alfabeta():
             """Vrne vrednost črnih figur na igralnem polju."""
             crni_boljsi = ["01110", "0110", "010", "211101", "011010", "010110"]
             crni_slabsi = ["211110", "011112", "101112", "211011", "110112", "21110", "01112", "2110", "0112", "210", "012"]
-            #Prvi in zanji element nastavi za nasprotnikove figure, da lahko primerja z elementi iz seznama
+            
+            #Prvi in zadnji element nastavi za nasprotnikove figure, da lahko primerja z elementi iz seznama
             niz = "2" + niz + "2"
             vrednost = 0
             if self.jaz == BELI:
@@ -176,7 +177,8 @@ class Alfabeta():
             """Vrne vrednost belih figur na igralnem polju."""
             beli_boljsi = ["02220", "0220", "020", "122202", "022020", "020220"]
             beli_slabsi = ["122220", "022221", "202221", "122022", "220221" "12220", "02221", "1220", "0221", "120", "021"]
-            #Prvi in zanji element nastavi za nasprotnikove figure, da lahko primerja z elementi iz seznama
+            
+            #Prvi in zadnji element nastavi za nasprotnikove figure, da lahko primerja z elementi iz seznama
             niz = "1" + niz + "1"
             vrednost = 0
             if self.jaz == BELI:
@@ -240,7 +242,6 @@ class Alfabeta():
 
         def vrednost_vrstic(tabela):
             """Vrne vrednost vrstic v tabeli."""
-
             rezultat = 0
             for vrstica in tabela:
                 nizek = ""
@@ -251,17 +252,15 @@ class Alfabeta():
 
         def vrednost_stolpcev(tabela):
             """Vrne vrednost stolpcev v tabeli."""
-
             stolpci = [list(x) for x in zip(*tabela)]
             return vrednost_vrstic(stolpci)
 
         def vse_diagonale(tabela):
             """Naredi seznam vseh diagonal."""
-
             matrika1 = np.array(tabela)
             diagonale = []
             dolzina = len(tabela)
-            #le diagonale, ki so dolzine vsaj 5
+            #Le diagonale, ki so dolžine vsaj 5
             for i in range(5-dolzina, dolzina-4):
                 diagonale.append(list(matrika1.diagonal(i)))
                 diagonale.append(list(np.fliplr(matrika1).diagonal(i)))
@@ -271,7 +270,6 @@ class Alfabeta():
 
         def vrednost_diagonal(tabela):
             """Vrne vrednost diagonal v tabeli."""
-
             return vrednost_vrstic(vse_diagonale(tabela))
 
         if self.jaz == CRNI:
@@ -279,14 +277,13 @@ class Alfabeta():
         elif self.igra.na_potezi == BELI:
             return -(vrednost_vrstic(tabela) + vrednost_stolpcev(tabela) + vrednost_diagonal(tabela))
         else:
-            assert False, "Napacna v vrednost_skupaj"
+            assert False, "Napačna v vrednost_skupaj"
 ##################################################################################################################################
     
     def alfabeta(self, globina, alfa, beta, maksimiziramo, trenutni):
         """Algoritem izračuna optimalno potezo za dano globino."""
         if self.prekinitev:
             return (None, 0)
-
 
         if self.igra.konec:
             if trenutni == CRNI:

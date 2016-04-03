@@ -7,10 +7,10 @@ class Clovek():
         pass
 
     def prekini(self):
-        """Človek bo že sam vedel kdaj mora nehati igrati"""
+        """Človek bo že sam vedel, kdaj mora nehati igrati."""
         pass
 
     def klik(self, x, y):
-        """Metoda posreduje koordinate, ki jih je dobila s klikom na platno, gui-ju, da povlece potezo."""
+        """Metoda posreduje koordinate, ki jih je dobila s klikom na platno, GUI-ju, da povleče potezo."""
         if not self.gui.konec:
             self.gui.povleci_potezo(x, y)

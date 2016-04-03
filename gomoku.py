@@ -89,20 +89,17 @@ class Gui():
                                  "Leto izida: 2016 \n"
                                  " \n"
                                  " \n"
-                                 "Igra je objavljena pod licenco MIT \n"
-                                 "Več o licenci si lahko preberete na \n"
-                                 "https://opensource.org/licenses/MIT \n"
-                                 "Celotna licenca je objavljena tudi  \n"
-                                 "v datoteki LICENCE.md v igri. \n"
-                                 " \n"
-                                 "Avtorja vljudno naprošava, da morebitne  \n"
-                                 "napake, težave in hrošče v programu sporočite \n"
-                                 "na https://github.com/bbYYJnhA/Wu-Zi-Qi/issues. \n"
-                                 " \n"
-                                 "Celotna koda programa je objavljena na: \n"
-                                 "https://github.com/bbYYJnhA/Wu-Zi-Qi \n"
+"""Igra je objavljena pod licenco MIT. Več o licenci si lahko 
+preberete na https://opensource.org/licenses/MIT. Celotna 
+licenca je objavljena tudi v datoteki LICENCE.md v igri.
 
-                                 , justify="left").grid(row=1, column=0)
+Avtorja vljudno naprošava, da morebitne napake, 
+težave in hrošče v programu sporočite na:
+https://github.com/bbYYJnhA/Wu-Zi-Qi/issues
+
+Celotna koda programa je objavljena na:
+https://github.com/bbYYJnhA/Wu-Zi-Qi
+""" , justify="left").grid(row=1, column=0)
 
 
 

@@ -37,6 +37,12 @@ class Gui():
         menu_igra.add_command(label="Nova igra", command=self.nova_igra_gumb)
         menu_igra.add_command(label="Izhod", command=master.destroy)
 
+        # Podmeni pomoč
+        menu_pomoc = tkinter.Menu(menu)
+        menu.add_cascade(label="Pomoč", menu=menu_pomoc)
+        menu_pomoc.add_command(label="Pomoč", command=self.pomoc)
+        menu_pomoc.add_command(label="O igri", command=self.oigri)
+
         for i in range(19):
             self.plosca.create_line(i*36+36, 0+36, i*36+36, 648+36)
             self.plosca.create_line(0+36, i*36+36, 648+36, i*36+36)
@@ -46,6 +52,60 @@ class Gui():
         self.klik = None
         self.konec = False
         self.igralec1.igraj()
+    
+    def pomoc(self):        
+        help = tk.Toplevel()
+        help.grab_set()                                  
+        help.title("Pomoč")                           
+        help.resizable(width=False, height=False)  
+        tk.Label(help, text="Navodila za igranje igre 5 v vrsto", font=("Helvetica", 20)).grid(row=0, column=0)       
+
+        tk.Label(help, text=" \n"
+                                 "Igra se igra na igralni plošči velikosti 19x19 \n"
+                                 "Igrata jo dva igralca. Figurice (črne in bele)  \n"
+                                 "igralca izmečno postavljata na vozlišča mreže in \n"
+                                 "poskušata narediti vrsto, stolpec ali diagonalo \n"
+                                 "petih figuric svoje barve \n"
+                                 " \n"
+                                 "Zmaga igralec, ki prvi doseže 5 v vrsto. \n"
+                                 " \n"
+                                 "V kolikor želite igrati novo igro izberite \n"
+                                 "v meniju igra -> nova igra ali desno zgoraj \n"
+                                 "kliknite na nova igra. Odprlo se vam bo novo \n"
+                                 "okno v katerem lahko nastavite parametre igralcev. \n"
+                                 , justify="left").grid(row=1, column=0)
+
+    def oigri(self):        
+        about = tk.Toplevel()
+        about.grab_set()                                  
+        about.title("O igri")                           
+        about.resizable(width=False, height=False) 
+       
+
+        tk.Label(about, text=" \n"
+                                 "Verzija igre: 1.0 \n"
+                                 "  \n"
+                                 "Avtorja: Mark Baltič in Jure Bernot \n"
+                                 "Leto izida: 2016 \n"
+                                 " \n"
+                                 " \n"
+                                 "Igra je objavljena pod licenco MIT \n"
+                                 "Več o licenci si lahko preberete na \n"
+                                 "https://opensource.org/licenses/MIT \n"
+                                 "Celotna licenca je objavljena tudi  \n"
+                                 "v datoteki LICENCE.md v igri. \n"
+                                 " \n"
+                                 "Avtorja vljudno naprošava, da morebitne  \n"
+                                 "napake, težave in hrošče v programu sporočite \n"
+                                 "na https://github.com/bbYYJnhA/Wu-Zi-Qi/issues. \n"
+                                 " \n"
+                                 "Celotna koda programa je objavljena na: \n"
+                                 "https://github.com/bbYYJnhA/Wu-Zi-Qi \n"
+
+                                 , justify="left").grid(row=1, column=0)
+
+
+
 
     def sporocilo(self, msg, naslov):
         """

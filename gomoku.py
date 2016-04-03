@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from igra import*
 from clovek import*
 from racunalnik import*
@@ -60,7 +59,7 @@ class Gui():
         tk.Label(help, text=" \n"
                                  "Igra se igra na igralni plošči velikosti 19x19 \n"
                                  "Igrata jo dva igralca. Figurice (črne in bele)  \n"
-                                 "igralca izmečno postavljata na vozlišča mreže in \n"
+                                 "igralca izmenično postavljata na vozlišča mreže in \n"
                                  "poskušata narediti vrsto, stolpec ali diagonalo \n"
                                  "petih figuric svoje barve. \n"
                                  " \n"

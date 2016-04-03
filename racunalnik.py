@@ -80,7 +80,7 @@ class Alfabeta():
         self.poteza = None
 
     def prekini(self):
-        """Če uporabnik zahteva prehinitev, se prekinitev nastavi na True"""
+        """Če uporabnik zahteva prekinitev, se prekinitev nastavi na True"""
         self.prekinitev = True
 
     def izracunaj_potezo(self, igra):
@@ -99,7 +99,7 @@ class Alfabeta():
 # HEVRISTIKA
 
     def vrednost_skupaj(self, tabela):
-        """Metoda vrne  vrednost tabele."""
+        """Metoda oceni vrednost pozicije."""
         ZMAGA = 1000000
         
         def crni(niz):

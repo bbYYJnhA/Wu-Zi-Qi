@@ -1,44 +1,40 @@
-﻿import tkinter
 import tkinter as tk
 from tkinter import ttk
 from igra import*
 from clovek import*
 from racunalnik import*
 
-CRNA = 1
-BELA = 2
-
 class Gui():
 
     def __init__(self, master):
         self.igra = Igra(self)
         
-        self.napis1 = tkinter.StringVar(master, value="Dobrodošli v 5 v vrsto")
-        tkinter.Label(master, textvariable=self.napis1).grid(row=0, column=0)
+        self.napis1 = tk.StringVar(master, value="Dobrodošli v 5 v vrsto")
+        tk.Label(master, textvariable=self.napis1).grid(row=0, column=0)
 
-        self.napis2 = tkinter.StringVar(master, value="Na potezi je črni")
-        tkinter.Label(master, textvariable=self.napis2).grid(row=42, column=0)
+        self.napis2 = tk.StringVar(master, value="Na potezi je črni")
+        tk.Label(master, textvariable=self.napis2).grid(row=42, column=0)
 
-        self.plosca = tkinter.Canvas(master, width=648+36+36, height=648+36+36, bg = "lightblue", borderwidth=0)
+        self.plosca = tk.Canvas(master, width=648+36+36, height=648+36+36, bg = "lightblue", borderwidth=0)
         self.plosca.grid(row=1, column=0, columnspan=1, rowspan=41)
 
-        self.gumb1 = tkinter.Button(master, text="Nova igra", command=self.nova_igra_gumb)
+        self.gumb1 = tk.Button(master, text="Nova igra", command=self.nova_igra_gumb)
         self.gumb1.grid(row=1, column=1)
 
         self.plosca.bind('<Button-1>', self.klik_plosca)
         
         # Glavni meni
-        menu = tkinter.Menu(master)
+        menu = tk.Menu(master)
         master.config(menu=menu)
 
         # Podmeni Igra
-        menu_igra = tkinter.Menu(menu)
+        menu_igra = tk.Menu(menu)
         menu.add_cascade(label="Igra", menu=menu_igra)
         menu_igra.add_command(label="Nova igra", command=self.nova_igra_gumb)
         menu_igra.add_command(label="Izhod", command=master.destroy)
 
         # Podmeni pomoč
-        menu_pomoc = tkinter.Menu(menu)
+        menu_pomoc = tk.Menu(menu)
         menu.add_cascade(label="Pomoč", menu=menu_pomoc)
         menu_pomoc.add_command(label="Pomoč", command=self.pomoc)
         menu_pomoc.add_command(label="O igri", command=self.oigri)
@@ -53,7 +49,8 @@ class Gui():
         self.konec = False
         self.igralec1.igraj()
     
-    def pomoc(self):        
+    def pomoc(self):
+        """Funkcija ustvari okno pomoč v GUI"""
         help = tk.Toplevel()
         help.grab_set()                                  
         help.title("Pomoč")                           
@@ -65,7 +62,7 @@ class Gui():
                                  "Igrata jo dva igralca. Figurice (črne in bele)  \n"
                                  "igralca izmečno postavljata na vozlišča mreže in \n"
                                  "poskušata narediti vrsto, stolpec ali diagonalo \n"
-                                 "petih figuric svoje barve \n"
+                                 "petih figuric svoje barve. \n"
                                  " \n"
                                  "Zmaga igralec, ki prvi doseže 5 v vrsto. \n"
                                  " \n"
@@ -75,7 +72,8 @@ class Gui():
                                  "okno v katerem lahko nastavite parametre igralcev. \n"
                                  , justify="left").grid(row=1, column=0)
 
-    def oigri(self):        
+    def oigri(self):
+        """Funkcija ustvari okno o igri v GUI"""        
         about = tk.Toplevel()
         about.grab_set()                                  
         about.title("O igri")                           
@@ -108,12 +106,11 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
         """
         Funkcija odpre novo okno, z vsebino sporočina in naslovom podanim v funkciji.
         """
-        popup = tkinter.Tk()
-        #popup.grab_set()
-        popup.wm_title(naslov)
-        label = ttk.Label(popup, text=msg)
-        label.pack(side="top", fill="x", pady=20)
-        popup.mainloop()
+        popup = tk.Toplevel()                               
+        popup.title(naslov)                           
+        popup.resizable(width=False, height=False)  
+        tk.Label(popup, text=msg, font=("Helvetica", 20)).grid(row=0, column=0) 
+
 
     def nova_igra(self, igralec1, igralec2, tezavnost_crni=2, tezavnost_beli=2):
         """
@@ -255,15 +252,6 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
         (y1, x1) = kje[4]
         self.plosca.create_line((x0+1) * 36, (y0+1) * 36, (x1+1) * 36, (y1+1) * 36, fill="red", width="3", tag="crta") 
 
-    def koncaj_igro(self):
-        """
-        Funkcija konča igro, in začne novo s privzetimi igralci Clovek vs Racunalnik
-        """
-        aplikacija = Gui(root)
-        self.igra = Igra(self)
-        self.igralec1 = Clovek(self, Alfabeta(2))
-        self.igralec2 = Racunalnik(self, Alfabeta(2))
-
     def preveri_zmago(self, j, i):
         """Preveri, če je konec in vrne trojico (Bool, zmagovalec, zmagovalna petorka)"""
         dolzina = len(self.igra.tabela)
@@ -362,12 +350,13 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
                     self.napis2.set("Na potezi je črni")
                     self.igralec1.igraj()
             else:
-                assert False, "Neveljaven igralec poskuša povlect potezo."
+                assert False, "Neveljaven igralec poskuša povleci potezo."
             
 
 if __name__ == "__main__":
     # Naredimo glavno okno in nastavimo ime
-    root = tkinter.Tk()
+    root = tk.Tk()
+    root.resizable(width=False, height=False) 
     root.title("五子棋")
     
     # Naredimo objekt razreda Gui in ga spravimo v spremenljivko,

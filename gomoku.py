@@ -139,6 +139,7 @@ class Gui():
                 
         self.plosca.delete("figure")
         self.plosca.delete("crta")
+        self.plosca.delete("pika")
         self.napis2.set("Na potezi je ČRNI")
         self.igralec1.igraj()
 
@@ -237,14 +238,16 @@ class Gui():
         x = i * 36
         y = j * 36
         self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="black", tags="figure")
-        
+        self.plosca.create_oval(x - 5, y - 5, x + 5, y + 5, fill="red", tags="pika")
+
     def narisi2(self, i, j):
         """
         Funkcija riše bele krogce. i,j so koodrinate po tabeli; x,y pa koordinate po risalnem platnu.
         """
         x = i * 36
         y = j * 36
-        self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="white", tags="figure")     
+        self.plosca.create_oval(x - 18, y - 18, x + 18, y + 18, fill="white", tags="figure")
+        self.plosca.create_oval(x - 5, y - 5, x + 5, y + 5, fill="red", tags="pika")     
 
     def narisi_crto(self, kje):
         """
@@ -337,6 +340,7 @@ class Gui():
         if self.igra.pravilna(i, j):
             trenutni = self.igra.na_potezi
             if self.igra.na_potezi == CRNI:
+                self.plosca.delete("pika")
                 self.narisi1(x, y)              
                 self.igra.povleci(i, j)
                 (kaj, kdo, kje) = self.preveri_zmago(i,j)

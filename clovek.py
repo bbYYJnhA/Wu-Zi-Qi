@@ -1,17 +1,16 @@
 class Clovek():
-	def __init__(self, igra, barva, tezavnost=None):
-		self.igra = igra
-		self.barva = barva
+    def __init__(self, gui, racunalnik, tezavnost=None):
+        self.gui = gui
         
-	def igraj(self):
-		self.igra.gui.plosca.bind('<Button-1>', self.klik)
+    def igraj(self):
+        """Funkcija ne dela nič in je tu zgolj zaradi formalnosti."""
+        pass
 
-	def prekini(self):
-		pass
+    def prekini(self):
+        """Človek bo že sam vedel kdaj mora nehati igrati"""
+        pass
 
-	def klik(self, event):
-		if self.igra.na_potezi.barva == self.barva:
-			i = (event.x+18) // 36
-			j = (event.y+18) // 36
-			self.igra.gui.povleci_potezo(i, j)
-			self.igra.zamenjaj()
+    def klik(self, x, y):
+        """Metoda posreduje koordinate, ki jih je dobila s klikom na platno, gui-ju, da povlece potezo."""
+        if not self.gui.konec:
+            self.gui.povleci_potezo(x, y)

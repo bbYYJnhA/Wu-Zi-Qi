@@ -6,7 +6,11 @@ Igro so igrali na daljnem vzhodu, v 19. stoletju pa so jo prinesli v Britanijo. 
 
 ## NAVODILA ZA NAMESTITEV IGRE
 
-V ukazno vrstico vnesete naslednje ukaze
+```
+Namestite paket numpy.
+```
+
+V ukazno vrstico vnesete naslednje ukaze:
 
 ```
 git clone https://github.com/bbYYJnhA/Wu-Zi-Qi.git
@@ -17,11 +21,11 @@ cd Wu-Zi-Qi
 ```
 
 ```
-python gui.py
+python gomoku.py
 ```
 
 oziroma
 
 ```
-python3 gui.py
+python3 gomoku.py
 ```

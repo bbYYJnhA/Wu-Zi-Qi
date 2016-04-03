@@ -41,8 +41,8 @@ class Gui():
             self.plosca.create_line(i*36+36, 0+36, i*36+36, 648+36)
             self.plosca.create_line(0+36, i*36+36, 648+36, i*36+36)
         
-        self.igralec1 = Clovek(self, Alfabeta(2), CRNI)
-        self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)
+        self.igralec1 = Clovek(self, Alfabeta(2))
+        self.igralec2 = Racunalnik(self, Alfabeta(2))
         self.klik = None
         self.konec = False
         self.igralec1.igraj()
@@ -67,10 +67,9 @@ class Gui():
             self.igralec1.prekini()
         if self.igralec2 is not None:
             self.igralec2.prekini()
-        #self.igralec1 = igralec1(self, )
-        #aplikacija = Gui(root)        
-        self.igralec1 = igralec1(self, Alfabeta(tezavnost_crni), CRNI)
-        self.igralec2 = igralec2(self, Alfabeta(tezavnost_beli), BELI)
+       
+        self.igralec1 = igralec1(self, Alfabeta(tezavnost_crni))
+        self.igralec2 = igralec2(self, Alfabeta(tezavnost_beli))
         self.klik = None
         self.konec = False
         self.igra = Igra(self)        
@@ -182,7 +181,7 @@ class Gui():
             
     def narisi1(self, i, j):
         """
-        Funkcija riše črne krogce.
+        Funkcija riše črne krogce. i,j so koodrinate po tabeli; x,y pa koordinate po risalnem platnu.
         """
         x = i * 36
         y = j * 36
@@ -190,7 +189,7 @@ class Gui():
         
     def narisi2(self, i, j):
         """
-        Funkcija riše bele krogce.
+        Funkcija riše bele krogce. i,j so koodrinate po tabeli; x,y pa koordinate po risalnem platnu.
         """
         x = i * 36
         y = j * 36
@@ -211,11 +210,11 @@ class Gui():
         """
         aplikacija = Gui(root)
         self.igra = Igra(self)
-        self.igralec1 = Clovek(self, Alfabeta(2) , CRNI)
-        self.igralec2 = Racunalnik(self, Alfabeta(2), BELI)
+        self.igralec1 = Clovek(self, Alfabeta(2))
+        self.igralec2 = Racunalnik(self, Alfabeta(2))
 
     def preveri_zmago(self, j, i):
-        """Preveri, če je konec in vrne trojko (Bool, zmagovalec, zmagovalna petorka)"""
+        """Preveri, če je konec in vrne trojico (Bool, zmagovalec, zmagovalna petorka)"""
         dolzina = len(self.igra.tabela)
 
         vrstica = i

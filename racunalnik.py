@@ -7,6 +7,7 @@ CRNI = 1
 BELI = 2
 
 def smiselne_pozicije(neki_seznam):
+    """Naredi seznam potez, ki jih računalnik pri razmišljanju preveri."""
     sez = set()
     for (i, j) in neki_seznam:
         if i+1 <= 18:
@@ -23,6 +24,8 @@ def smiselne_pozicije(neki_seznam):
     return list(sez)
 
 def drug_igralec(igralec):
+    """Zamenja igralca, ki je na potezi. To funkcijo uporablja alfabeta."""
+    
     if igralec == CRNI:
         return BELI
     elif igralec == BELI:
@@ -32,19 +35,20 @@ def drug_igralec(igralec):
     
 ##################################################################################################################################
 class Racunalnik():
-    def __init__(self, gui, algoritem, barva):
+    def __init__(self, gui, algoritem):
         self.gui = gui
-        self.barva = self.gui.igra.na_potezi
         self.algoritem = algoritem
         self.mislec = None
 
 
     def igraj(self):
+        """Metoda naredi novo vlakno, s katerim bo računalnik razmišljal in določil optimalno potezo."""
         self.mislec = threading.Thread(target=lambda: self.algoritem.izracunaj_potezo(self.gui.igra.kopija()))
         self.mislec.start()
         self.gui.plosca.after(100, self.preveri_potezo)
 
     def preveri_potezo(self):
+        """S metodo računalnik preveri, ali je poteza, ki jo je izračunal, veljavna."""
         if self.algoritem.poteza is not None:
             (i, j) = self.algoritem.poteza
             self.gui.povleci_potezo(i+1, j+1)
@@ -53,14 +57,13 @@ class Racunalnik():
             self.gui.plosca.after(100, self.preveri_potezo)
 
     def prekini(self):
+        """Metoda prekine vlakno."""
         if self.mislec:
             print("Prekinjamo {0}".format(self.mislec))
             self.algoritem.prekini()
             self.mislec.join()
             self.mislec = None
 
-    # potrebno je prepovedati klikanje uporabnika na plošči medtem, ko računalnik razmišlja!!!
-    # lahko da vlakna to že sama po sebi to rešijo
     def klik(self, i, j):
         pass
 #################################################################################################################################
@@ -75,6 +78,8 @@ class Alfabeta():
         self.prekinitev = True
 
     def izracunaj_potezo(self, igra):
+        """Algoritem s to metodo izračuna optimalno potezo za dano globino."""
+
         self.igra = igra
         self.prekinitev = False
         self.jaz = self.igra.na_potezi
@@ -88,10 +93,13 @@ class Alfabeta():
 
 ################################################################################################################################            
 # HEVRISTIKA
-    def vrednost_skupaj(self, tabela, barva=None):
+    def vrednost_skupaj(self, tabela):
+        """Metoda vrne  vrednost tabele."""
         ZMAGA = 1000000
         
-        def crni(niz, barva):
+        def crni(niz):
+            """Vrne vrednost črnih figur na igralnem polju."""
+
             crni_boljsi = ["01110", "0110", "010", "211101", "011010", "010110"]
             crni_slabsi = ["211110", "011112", "101112", "211011", "110112", "21110", "01112", "2110", "0112", "210", "012"]
             #prvi in zanji element, da se ujema z elementi iz seznama
@@ -159,7 +167,9 @@ class Alfabeta():
 
 
 
-        def beli(niz, barva):
+        def beli(niz):
+            """Vrne vrednost belih figur na igralnem polju."""
+
             beli_boljsi = ["02220", "0220", "020", "122202", "022020", "020220"]
             beli_slabsi = ["122220", "022221", "202221", "122022", "220221" "12220", "02221", "1220", "0221", "120", "021"]
             niz = "1" + niz + "1"
@@ -223,20 +233,26 @@ class Alfabeta():
 
             return vrednost
 
-        def vrednost_vrstic(tabela, barva):
+        def vrednost_vrstic(tabela):
+            """Vrne vrednost vrstic v tabeli."""
+
             rezultat = 0
             for vrstica in tabela:
                 nizek = ""
                 for znak in vrstica:
                     nizek += str(znak)
-                rezultat += crni(nizek, barva) - beli(nizek, barva)
+                rezultat += crni(nizek) - beli(nizek)
             return rezultat
 
-        def vrednost_stolpcev(tabela, barva):
+        def vrednost_stolpcev(tabela):
+            """Vrne vrednost stolpcev v tabeli."""
+
             stolpci = [list(x) for x in zip(*tabela)]
-            return vrednost_vrstic(stolpci, barva)
+            return vrednost_vrstic(stolpci)
 
         def vse_diagonale(tabela):
+            """Naredi seznam vseh diagonal."""
+
             matrika1 = np.array(tabela)
             diagonale = []
             dolzina = len(tabela)
@@ -248,18 +264,22 @@ class Alfabeta():
 
             return diagonale
 
-        def vrednost_diagonal(tabela, barva):
-                return vrednost_vrstic(vse_diagonale(tabela), barva)
+        def vrednost_diagonal(tabela):
+            """Vrne vrednost diagonal v tabeli."""
+
+            return vrednost_vrstic(vse_diagonale(tabela))
 
         if self.jaz == CRNI:
-            return vrednost_vrstic(tabela, barva) + vrednost_stolpcev(tabela, barva) + vrednost_diagonal(tabela, barva)
+            return vrednost_vrstic(tabela) + vrednost_stolpcev(tabela) + vrednost_diagonal(tabela)
         elif self.igra.na_potezi == BELI:
-            return -(vrednost_vrstic(tabela, barva) + vrednost_stolpcev(tabela, barva) + vrednost_diagonal(tabela, barva))
+            return -(vrednost_vrstic(tabela) + vrednost_stolpcev(tabela) + vrednost_diagonal(tabela))
         else:
-            assert False, "Napacna barva v vrednost_skupaj"
+            assert False, "Napacna v vrednost_skupaj"
 ##################################################################################################################################
     
-    def alfabeta(self, globina, alfa, beta, maksimiziramo, trenutni):        
+    def alfabeta(self, globina, alfa, beta, maksimiziramo, trenutni):
+        """Algoritem izračuna optimalno potezo za dano globino."""
+
         if self.prekinitev:
             print("alfabeta prekinja")
             return (None, 0)

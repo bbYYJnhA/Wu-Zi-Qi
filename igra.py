@@ -4,7 +4,7 @@ BELI = 2
 
 def matrika_nicel(n, m):
     """
-    Funkcija naredi matriko n x m ničel
+    Funkcija naredi matriko n x m ničel.
     """
     sez = []
     for i in range(m):
@@ -29,11 +29,11 @@ class Igra():
             self.tabela[j][i] = 0
             self.konec = False
         else:
-            assert "Seznam je prazen"
+            assert False, "Seznam je prazen"
 
 
     def kopija(self):
-        """Vrne kopijo te igre."""
+        """Vrne kopijo igre."""
         k = Igra(self.gui)
         k.tabela = [self.tabela[i][:] for i in range(19)]
         k.na_potezi = self.na_potezi
@@ -42,7 +42,7 @@ class Igra():
         return k
 
     def pravilna(self, i, j):
-        """Funkcija preveri ali je poteza pravilna."""
+        """Funkcija preveri, ali je poteza pravilna."""
         return ((self.tabela[j][i] == 0) and not (self.konec))
 
     def preveri_konec(self):
@@ -64,14 +64,14 @@ class Igra():
     
     def povleci_racunalnik(self, i, j):
         """V tabelo vstavi figuro trenutnega igralca in potezo shrani v self.poteze. Ta metoda se uporablja,
-        ko računalnik igra sam s sabo"""
+        ko računalnik igra sam s seboj."""
         if self.pravilna(i,j):
             self.tabela[j][i] = self.na_potezi
             self.poteze += [(i, j)]
 
     
     def povleci(self, i, j):
-        """Funkcija naredi potezo, če je pravilna."""
+        """Funkcija naredi potezo, če je le-ta pravilna."""
         if self.pravilna(i,j):
             self.tabela[j][i] = self.na_potezi
             self.poteze += [(i, j)]

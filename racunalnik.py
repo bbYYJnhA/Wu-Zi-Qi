@@ -11,15 +11,20 @@ def smiselne_pozicije(neki_seznam):
     for (i, j) in neki_seznam:
         if i+1 <= 18:
             sez.add((i + 1, j))
+        if i+1 <= 18 and j-1>0:
             sez.add((i + 1, j - 1))         
         if j+1 <= 18:
             sez.add((i, j + 1))
+        if j+1 <= 18 and i-1>0:
             sez.add((i - 1, j + 1))
         if j+1 <= 18 and i+1 <=18:
             sez.add((i + 1, j + 1))
-        sez.add((i - 1, j - 1))
-        sez.add((i - 1, j))
-        sez.add((i, j - 1))
+        if i-1>0 and j-1>0:
+            sez.add((i - 1, j - 1))
+        if i-1>0:
+            sez.add((i - 1, j))
+        if j-1>0:
+            sez.add((i, j - 1))
     return list(sez)
 
 def drug_igralec(igralec):
@@ -40,11 +45,13 @@ class Racunalnik():
 
 
     def igraj(self):
+        """Požene vlakno in vsaih 100 ms preveri, če je poteza že izračunana."""
         self.mislec = threading.Thread(target=lambda: self.algoritem.izracunaj_potezo(self.gui.igra.kopija()))
         self.mislec.start()
         self.gui.plosca.after(100, self.preveri_potezo)
 
     def preveri_potezo(self):
+        """Če je bila poteza izračunana, jo vrne sicer čaka."""
         if self.algoritem.poteza is not None:
             (i, j) = self.algoritem.poteza
             self.gui.povleci_potezo(i+1, j+1)
@@ -53,15 +60,15 @@ class Racunalnik():
             self.gui.plosca.after(100, self.preveri_potezo)
 
     def prekini(self):
+        """Prekinji igro. Računalniku sporoči, naj thread ustavi"""
         if self.mislec:
-            print("Prekinjamo {0}".format(self.mislec))
+            #print("Prekinjamo {0}".format(self.mislec))
             self.algoritem.prekini()
             self.mislec.join()
             self.mislec = None
 
-    # potrebno je prepovedati klikanje uporabnika na plošči medtem, ko računalnik razmišlja!!!
-    # lahko da vlakna to že sama po sebi to rešijo
     def klik(self, i, j):
+        """Računalnik ne klika, zato je ta funkcija tu zgolj zaradi formalnosti"""
         pass
 #################################################################################################################################
 class Alfabeta():
@@ -72,9 +79,11 @@ class Alfabeta():
         self.poteza = None
 
     def prekini(self):
+        """Če uporabnik zahteva prehinitev, se prekinitev nastavi na True"""
         self.prekinitev = True
 
     def izracunaj_potezo(self, igra):
+        """Funkcija izračuna optimalno potezo glede na neko globino."""
         self.igra = igra
         self.prekinitev = False
         self.jaz = self.igra.na_potezi
@@ -83,15 +92,17 @@ class Alfabeta():
         self.jaz = None
         self.igra = None
         if not self.prekinitev:
-            print("alfabeta: poteza {0}, vrednost {1}".format(poteza, vrednost))
+            #print("alfabeta: poteza {0}, vrednost {1}".format(poteza, vrednost))
             self.poteza = poteza
 
 ################################################################################################################################            
 # HEVRISTIKA
     def vrednost_skupaj(self, tabela, barva=None):
+        """Funkcija oceni potzcijo na plošči"""
         ZMAGA = 1000000
         
         def crni(niz, barva):
+            """Funkcija oceni pozicijo črnih na plošči"""
             crni_boljsi = ["01110", "0110", "010", "211101", "011010", "010110"]
             crni_slabsi = ["211110", "011112", "101112", "211011", "110112", "21110", "01112", "2110", "0112", "210", "012"]
             #prvi in zanji element, da se ujema z elementi iz seznama
@@ -160,6 +171,7 @@ class Alfabeta():
 
 
         def beli(niz, barva):
+            """Funkcija oceni pozicijo črnih na plošči"""
             beli_boljsi = ["02220", "0220", "020", "122202", "022020", "020220"]
             beli_slabsi = ["122220", "022221", "202221", "122022", "220221" "12220", "02221", "1220", "0221", "120", "021"]
             niz = "1" + niz + "1"
@@ -259,9 +271,10 @@ class Alfabeta():
             assert False, "Napacna barva v vrednost_skupaj"
 ##################################################################################################################################
     
-    def alfabeta(self, globina, alfa, beta, maksimiziramo, trenutni):        
+    def alfabeta(self, globina, alfa, beta, maksimiziramo, trenutni):
+        """ Glavna funkcija: računa potezo do zahtevane globine."""
         if self.prekinitev:
-            print("alfabeta prekinja")
+            #print("alfabeta prekinja")
             return (None, 0)
         #print("{0} {1} {2}".format(globina, maksimiziramo, trenutni))
 

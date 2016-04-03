@@ -7,6 +7,7 @@ CRNI = 1
 BELI = 2
 
 def smiselne_pozicije(neki_seznam):
+    """Funkcija izračuna smiselne poteze in sicer +-1 za vsako že postavljeno figuro."""
     sez = set()
     for (i, j) in neki_seznam:
         if i+1 <= 18:
@@ -28,6 +29,7 @@ def smiselne_pozicije(neki_seznam):
     return list(sez)
 
 def drug_igralec(igralec):
+    """Funkcija vrne nasprotnega igralca, če ga računalnik potrebuje"""
     if igralec == CRNI:
         return BELI
     elif igralec == BELI:

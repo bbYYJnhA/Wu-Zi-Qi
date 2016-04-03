@@ -31,7 +31,7 @@ class Igra():
 
 
     def kopija(self):
-        """Vrni kopijo te igre, brez zgodovine."""
+        """Vrni kopijo te igre."""
         k = Igra(self.gui)
         k.tabela = [self.tabela[i][:] for i in range(19)]
         k.na_potezi = self.na_potezi

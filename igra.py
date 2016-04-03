@@ -4,7 +4,7 @@ BELI = 2
 
 def matrika_nicel(n, m):
     """
-    Funkcija naredi matriko n x m ni
+    Funkcija naredi matriko n x m ničel
     """
     sez = []
     for i in range(m):
@@ -33,7 +33,7 @@ class Igra():
 
 
     def kopija(self):
-        """Vrne kopijo te igre, brez zgodovine."""
+        """Vrne kopijo te igre."""
         k = Igra(self.gui)
         k.tabela = [self.tabela[i][:] for i in range(19)]
         k.na_potezi = self.na_potezi
@@ -63,19 +63,19 @@ class Igra():
             assert False, "Neveljaven nasprotnik"
     
     def povleci_racunalnik(self, i, j):
-        """V tabelo vstavi figuro trenutnega igralca in potezo shrani v self.poteze."""
+        """V tabelo vstavi figuro trenutnega igralca in potezo shrani v self.poteze. Ta metoda se uporablja,
+        ko računalnik igra sam s sabo"""
         if self.pravilna(i,j):
             self.tabela[j][i] = self.na_potezi
             self.poteze += [(i, j)]
 
     
     def povleci(self, i, j):
+        """Funkcija naredi potezo, če je pravilna."""
         if self.pravilna(i,j):
             self.tabela[j][i] = self.na_potezi
             self.poteze += [(i, j)]
-            #print(self.tabela) 
             self.nasprotnik()
-            #   self.gui.na_potezi.igraj()
 
-        #Ali je konec (to metodo bo poklical Gui - self.igra.preveri_konec(i,j))
+
     

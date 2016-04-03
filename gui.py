@@ -67,13 +67,16 @@ class Gui():
             self.igralec1.prekini()
         if self.igralec2 is not None:
             self.igralec2.prekini()
-       
+
+        # Nastavljamo vse potrebno za pričetek igre       
         self.igralec1 = igralec1(self, Alfabeta(tezavnost_crni))
-        self.igralec2 = igralec2(self, Alfabeta(tezavnost_beli))
+        self.igralec2 = igralec2(self, Alfabeta(tezavnost_beli))     
         self.klik = None
         self.konec = False
         self.igra = Igra(self)        
         
+        # Brišemo figure in črte s polja
+                
         self.plosca.delete("figure")
         self.plosca.delete("crta")
         self.napis2.set("Na potezi je ČRNI")
@@ -95,44 +98,33 @@ class Gui():
             self.nova_igra(igralec_1, igralec_2, tezavnost_crni.get(), tezavnost_beli.get())
             new_game.destroy()
 
-        # Ustvari novo okno za izbiro nastavitev nove igre.
+        # Novo okno nova igra
         new_game = tk.Toplevel()
-        new_game.grab_set()                                   # Postavi fokus na okno in ga obdrži
-        new_game.title("Nova igra")                           # Naslov okna
-        #new_game.resizable(width=False, height=False)         # Velikosti okna ni mogoče spreminjati
+        new_game.grab_set()                                  
+        new_game.title("Nova igra")                           
+        new_game.resizable(width=False, height=False)         
 
-        new_game.grid_columnconfigure(0, minsize=120)         # Nastavitev minimalne širine ničtega stolpca
-        new_game.grid_columnconfigure(2, minsize=150)         # Nastavitev minimalne širine drugega stolpca
-        new_game.grid_rowconfigure(0, minsize=80)             # Nastavitev minimalne višine ničte vrstice
-        new_game.grid_rowconfigure(5, minsize=70)             # Nastavitev minimalne višine pete vrstice
-        new_game.grid_rowconfigure(9, minsize=80)             # Nastavitev minimalne višine devete vrstice
+
+        # Nastavitve višine, širine posameznih stolpcev/vrstic
+        new_game.grid_columnconfigure(0, minsize=120)       
+        new_game.grid_columnconfigure(2, minsize=150)
+        new_game.grid_rowconfigure(0, minsize=80)
+        new_game.grid_rowconfigure(5, minsize=70)
+        new_game.grid_rowconfigure(9, minsize=80)
 
         tk.Label(new_game, text="Nastavitve nove igre", font=("Helvetica", 20)).grid(row=0, column=0, columnspan=4)
 
-        # Nastavitve težavnosti
-        # ---------------------------------------------------------
-        #tk.Label(new_game, text="Izberite težavnost:").grid(row=1, column=1, sticky="W")
-        tezavnosti = [("Težko", 4) ,("Srednje", 2), ("Lahko", 1)]  # Možne težavnosti
-        izbrana_tezavnost = tk.IntVar()                            # Spremenljivka kamor shranimo izbrano težavnost
-        izbrana_tezavnost.set(2)                                   # Nastavitev privzete vrednosti
-
-        # Ustvari radijske gumbe za izbrio težavnosti:
-        #for vrstica, (besedilo, vrednost) in enumerate(tezavnosti):
-        #    tk.Radiobutton(new_game, text=besedilo, variable=izbrana_tezavnost, value=vrednost, width=10,
-        #                   anchor="w").grid(row=vrstica + 2, column=1)
-        # ---------------------------------------------------------
-
+      
         # Nastavitve igralcev
-        # ---------------------------------------------------------
         tk.Label(new_game, text="ČRNI", font=("Helvetica", 13)).grid(row=2, column=0, sticky="E")
         tk.Label(new_game, text="BELI", font=("Helvetica", 13)).grid(row=2, column=2, sticky="E")
         tk.Label(new_game, text="Vrsta igralca:").grid(row=3, column=0, rowspan=2, sticky="E")
         tk.Label(new_game, text="Vrsta igralca:").grid(row=3, column=2, rowspan=2, sticky="E")
 
-        igralec_1_clovek = tk.BooleanVar()                         # Spremenljivka kamor shranimo vrsto prvega igralca
-        igralec_1_clovek.set(True)                                 # Privzeta vrednost vrste prvega igralca
-        igralec_2_clovek = tk.BooleanVar()                         # Spremenljivka kamor shranimo vrsto drugega igralca
-        igralec_2_clovek.set(True)                                 # Privzeta vrednost vrste drugega igralca
+        igralec_1_clovek = tk.BooleanVar()                         
+        igralec_1_clovek.set(True)                                 
+        igralec_2_clovek = tk.BooleanVar()                         
+        igralec_2_clovek.set(True)                                 
         igralci = [("Človek", True, igralec_1_clovek, 4, 1), ("Računalnik", False, igralec_1_clovek, 5, 1),
                    ("Človek", True, igralec_2_clovek, 4, 3), ("Računalnik", False, igralec_2_clovek, 5, 3)]
 
@@ -141,7 +133,7 @@ class Gui():
             tk.Radiobutton(new_game, text=besedilo, variable=spremenljivka, value=vrednost, width=10, anchor="w")\
                 .grid(row=vrstica, column=stolpec)
 
-        # Gumb za izbiro težavnosti
+        # Drsnik za izbiro težavnosti belega in črnega igralca
         
         tezavnost_crni = tk.IntVar()
         tezavnost_crni.set(2)        
@@ -154,7 +146,6 @@ class Gui():
         tk.Label(new_game, text="Težavnost:").grid(row=6, column=2, rowspan=2, sticky="E")
         skala_crni = tk.Scale(new_game, from_=1, to=3, variable = tezavnost_beli, orient="horizontal")
         skala_crni.grid(row=6, column=3)
-        #skala.pack(anchor="center")
         # ---------------------------------------------------------
 
         # Gumba za začetek nove igre in preklic
@@ -167,7 +158,7 @@ class Gui():
 
     def klik_plosca(self, event):
         """
-        Nariše črne oz. bele krogce na polje.
+        Nariše črne oz. bele krogce na polje v odvisnosti igralca na potezi.
         """
         x = ((event.x + 18) // 36)
         y = ((event.y + 18) // 36)
@@ -217,6 +208,8 @@ class Gui():
         """Preveri, če je konec in vrne trojico (Bool, zmagovalec, zmagovalna petorka)"""
         dolzina = len(self.igra.tabela)
 
+        # Preverjamo po vrsticah
+        
         vrstica = i
         for stolpec in range(dolzina-4):
             if self.igra.tabela[vrstica][stolpec] != 0:
@@ -230,6 +223,7 @@ class Gui():
                     return (True, self.igra.na_potezi, \
                             [(vrstica,stolpec),(vrstica,stolpec+1),(vrstica,stolpec+2),(vrstica,stolpec+3),(vrstica,stolpec+4)])
 
+        # Preverjamo po stolpcih
         stolpec = j
         for vrstica in range(dolzina-4):
             if self.igra.tabela[vrstica][stolpec] != 0:
@@ -243,6 +237,7 @@ class Gui():
                         return (True, self.igra.na_potezi,\
                             [(vrstica,stolpec),(vrstica+1,stolpec),(vrstica+2,stolpec),(vrstica+3,stolpec),(vrstica+4,stolpec)])
 
+        # Preverjamo po levih diagonalah
 
         for vrstica in range(4, dolzina):
             for stolpec in range(0, dolzina-4):
@@ -256,7 +251,9 @@ class Gui():
                         self.konec = True   
                         return (True, self.igra.na_potezi,\
                             [(vrstica,stolpec),(vrstica-1,stolpec+1),(vrstica-2,stolpec+2),(vrstica-3,stolpec+3),(vrstica-4,stolpec+4)])   
-
+        
+        # Preverjamo po desnih diagonalah
+        
         for vrstica in range(0, dolzina-4):
             for stolpec in range(0, dolzina-4):
                 if self.igra.tabela[vrstica][stolpec] != 0:

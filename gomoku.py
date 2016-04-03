@@ -13,7 +13,7 @@ class Gui():
     def __init__(self, master):
         self.igra = Igra(self)
         
-        self.napis1 = tkinter.StringVar(master, value="Dobrodošli v 五子棋")
+        self.napis1 = tkinter.StringVar(master, value="Dobrodošli v 5 v vrsto")
         tkinter.Label(master, textvariable=self.napis1).grid(row=0, column=0)
 
         self.napis2 = tkinter.StringVar(master, value="Na potezi je črni")

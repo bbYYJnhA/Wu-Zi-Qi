@@ -57,7 +57,7 @@ class Gui():
         tk.Label(help, text="Navodila za igranje igre 5 v vrsto", font=("Helvetica", 20)).grid(row=0, column=0)       
 
         tk.Label(help, text=" \n"
-                                 "Igra se igra na igralni plošči velikosti 19x19 \n"
+                                 "Igra se igra na igralni plošči velikosti 19x19. \n"
                                  "Igrata jo dva igralca. Figurice (črne in bele)  \n"
                                  "igralca izmenično postavljata na vozlišča mreže in \n"
                                  "poskušata narediti vrsto, stolpec ali diagonalo \n"
@@ -65,14 +65,14 @@ class Gui():
                                  " \n"
                                  "Zmaga igralec, ki prvi doseže 5 v vrsto. \n"
                                  " \n"
-                                 "V kolikor želite igrati novo igro izberite \n"
+                                 "V kolikor želite igrati novo igro, izberite \n"
                                  "v meniju igra -> nova igra ali desno zgoraj \n"
                                  "kliknite na nova igra. Odprlo se vam bo novo \n"
-                                 "okno v katerem lahko nastavite parametre igralcev. \n"
+                                 "okno, v katerem lahko nastavite parametre igralcev. \n"
                                  , justify="left").grid(row=1, column=0)
 
     def oigri(self):
-        """Funkcija ustvari okno o igri v GUI"""        
+        """Funkcija ustvari okno o igri v GUI."""        
         about = tk.Toplevel()
         about.grab_set()                                  
         about.title("O igri")                           
@@ -103,7 +103,7 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
 
     def sporocilo(self, msg, naslov):
         """
-        Funkcija odpre novo okno, z vsebino sporočina in naslovom podanim v funkciji.
+        Funkcija odpre novo okno z vsebino sporočila in naslovom podanim v funkciji.
         """
         popup = tk.Toplevel()                               
         popup.title(naslov)                           
@@ -129,7 +129,6 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
         self.igra = Igra(self)        
         
         # Brišemo figure in črte s polja
-                
         self.plosca.delete("figure")
         self.plosca.delete("crta")
         self.plosca.delete("pika")
@@ -137,7 +136,7 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
         self.igralec1.igraj()
 
     def nova_igra_gumb(self):
-        """Ustvari okno za izbiro nastavitev nove igre (če ne obstaja) ter začne novo igro, z izbranimi nastavitvami."""
+        """Ustvari okno za izbiro nastavitev nove igre (če ne obstaja) ter začne novo igro z izbranimi nastavitvami."""
 
         def ustvari_igro():
             """Pomožna funkcija, ki ustvari novo igro, nastavi ime igralcev ter zapre okno za izbiro nastavitev."""
@@ -188,7 +187,6 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
                 .grid(row=vrstica, column=stolpec)
 
         # Drsnik za izbiro težavnosti belega in črnega igralca
-        
         tezavnost_crni = tk.IntVar()
         tezavnost_crni.set(2)        
         tk.Label(new_game, text="Težavnost:").grid(row=6, column=0, rowspan=2, sticky="E")
@@ -200,7 +198,7 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
         tk.Label(new_game, text="Težavnost:").grid(row=6, column=2, rowspan=2, sticky="E")
         skala_crni = tk.Scale(new_game, from_=1, to=3, variable = tezavnost_beli, orient="horizontal")
         skala_crni.grid(row=6, column=3)
-        # ---------------------------------------------------------
+        
 
         # Gumba za začetek nove igre in preklic
         tk.Button(new_game, text="Prekliči", width=20, height=2,
@@ -226,7 +224,7 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
             
     def narisi1(self, i, j):
         """
-        Funkcija riše črne krogce. i,j so koodrinate po tabeli; x,y pa koordinate po risalnem platnu.
+        Funkcija riše črne krogce. i,j so koodrinate v tabeli; x,y pa koordinate na risalnem platnu.
         """
         x = i * 36
         y = j * 36
@@ -235,7 +233,7 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
 
     def narisi2(self, i, j):
         """
-        Funkcija riše bele krogce. i,j so koodrinate po tabeli; x,y pa koordinate po risalnem platnu.
+        Funkcija riše bele krogce. i,j so koodrinate v tabeli; x,y pa koordinate na risalnem platnu.
         """
         x = i * 36
         y = j * 36
@@ -244,7 +242,7 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
 
     def narisi_crto(self, kje):
         """
-        Funkcija nariše črto, glede na to kje ji podamo začetno in končno koortinato.
+        Funkcija nariše daljico. Krajišči sta podani z začetnima in končnima koordinatama zmagovalne petorke.
         Uporablja se za povezovanje figur zmagovalne kombinacije.
         """
         (y0, x0) = kje[0]
@@ -252,11 +250,10 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
         self.plosca.create_line((x0+1) * 36, (y0+1) * 36, (x1+1) * 36, (y1+1) * 36, fill="red", width="3", tag="crta") 
 
     def preveri_zmago(self, j, i):
-        """Preveri, če je konec in vrne trojico (Bool, zmagovalec, zmagovalna petorka)"""
+        """Preveri, če je konec, in vrne trojico (Bool, zmagovalec, zmagovalna petorka)."""
         dolzina = len(self.igra.tabela)
 
         # Preverjamo po vrsticah
-        
         vrstica = i
         for stolpec in range(dolzina-4):
             if self.igra.tabela[vrstica][stolpec] != 0:
@@ -285,7 +282,6 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
                             [(vrstica,stolpec),(vrstica+1,stolpec),(vrstica+2,stolpec),(vrstica+3,stolpec),(vrstica+4,stolpec)])
 
         # Preverjamo po levih diagonalah
-
         for vrstica in range(4, dolzina):
             for stolpec in range(0, dolzina-4):
                 if self.igra.tabela[vrstica][stolpec] != 0:
@@ -300,7 +296,6 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
                             [(vrstica,stolpec),(vrstica-1,stolpec+1),(vrstica-2,stolpec+2),(vrstica-3,stolpec+3),(vrstica-4,stolpec+4)])   
         
         # Preverjamo po desnih diagonalah
-        
         for vrstica in range(0, dolzina-4):
             for stolpec in range(0, dolzina-4):
                 if self.igra.tabela[vrstica][stolpec] != 0:
@@ -349,7 +344,7 @@ https://github.com/bbYYJnhA/Wu-Zi-Qi
                     self.napis2.set("Na potezi je črni")
                     self.igralec1.igraj()
             else:
-                assert False, "Neveljaven igralec poskuša povleci potezo."
+                assert False, "Neveljaven igralec poskuša povleči potezo."
             
 
 if __name__ == "__main__":
